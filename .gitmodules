@@ -1,0 +1,3 @@
+[submodule "src/floor_plan_annotator/CubiCasa5k"]
+	path = src/floor_plan_annotator/CubiCasa5k
+	url = https://github.com/CubiCasa/CubiCasa5k.git
