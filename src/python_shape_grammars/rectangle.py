@@ -1,9 +1,8 @@
 '''A rectangle in 2D coordinate vectors
 '''
-from .shape import Shape
 
 
-class Rectangle(Shape):
+class Rectangle:
     '''Rectangle Class
     '''
 

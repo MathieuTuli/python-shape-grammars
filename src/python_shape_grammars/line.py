@@ -1,10 +1,9 @@
 '''Line shape
 '''
 from .vector import Vector
-from .shape import Shape
 
 
-class Line(Shape):
+class Line:
     def __init__(self, vector_a: Vector, vector_b: Vector) -> None:
         self.vector_a = vector_a
         self.vector_b = vector_b
