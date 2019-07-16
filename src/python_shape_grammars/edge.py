@@ -39,6 +39,14 @@ class Edge:
     def __len__(self) -> float:
         return len(self.line)
 
+    def __eq__(self, other: 'Edge') -> bool:
+        return True if self.node_a == other.node_a and \
+            self.node_b == other.node_b and \
+            self.type == other.type and \
+            self.doors == other.doors and \
+            self.windows == other.windows and \
+            self.edge_count == other.edge_count else False
+
     def get_left_node(self) -> Optional[Node]:
         return self.line.left_node
 
