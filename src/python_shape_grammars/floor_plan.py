@@ -3,23 +3,34 @@
 from typing import List
 
 from .room import Room
-from .node import Node
-from .edge import Edge
 
 
 class FloorPlan:
     def __init__(self,
                  name: str,
                  status: str,
-                 starting_nodes: List[Node] = list(),
-                 starting_edges: List[Edge] = list()) -> None:
+                 starting_rooms: List[Room] = list()) -> None:
         self.name = name
         self.status = status
-        self.nodes: List[Node] = starting_nodes
-        self.edges: List[Edge] = starting_edges
+        self.rooms: List[Room] = starting_rooms
 
     def __str__(self) -> str:
         return f"FloorPlan {self.name} in {self.status}"
 
-    def add_room(self, room: Room):
-        pass
+    def add_room(self, room: Room) -> None:
+        if not isinstance(room, Room):
+            raise ValueError(f"Cannot add room not of type {type(Room)}")
+        self.rooms.append(room)
+
+    def remove_room(self, room: Room) -> None:
+        if not isinstance(room, Room):
+            raise ValueError(f"Cannot add room not of type {type(Room)}")
+        raise NotImplementedError
+
+    def rooms_exists(self, rooms: Room) -> bool:
+        if not isinstance(rooms, List):
+            raise ValueError(f"Cannot parse rooms, not a list")
+        for room in rooms:
+            if not isinstance(room, Room):
+                raise ValueError(f"Cannot add room not of type {type(Room)}")
+            raise NotImplementedError
