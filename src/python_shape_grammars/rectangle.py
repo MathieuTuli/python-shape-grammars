@@ -11,14 +11,9 @@ from .node import Node
 
 class Rectangle:
     '''Rectangle Class
-
-    A Rectangle is thus just a shape defined by..
-        - four corner Nodes
-        - a center label Node
-        - 8 Edges (four sides and center label edges)
     '''
 
-    def __init__(self, corners: List[Node], label: str) -> None:
+    def __init__(self, corners: List[Node], label_node: Node) -> None:
         if len(corners) != 4:
             raise ValueError(
                 "Rectangle was initialized with list of corners != 4")
@@ -27,12 +22,17 @@ class Rectangle:
         self.SE: Node = SE
         self.NW: Node = SW
         self.SW: Node = NW
+
+        if label_node.x != (self.NE.x - self.NW.x) and \
+                label_node.y != (self.NE.y - self.SE.y):
+            raise ValueError(
+                "The label_node is not in the midpoint of the rectangle")
         self.corners: List[Node] = [self.NE, self.SE, self.NW, self.SW]
         self.width: float = NE.x - NW.x
         self.height: float = NE.y - SE.y
+        self.label_node = label_node
 
         # TODO need to define allowable labels
-        self.label: str = label
         self.is_horizontal: bool = True if self.width > self.height else False
         self.is_vertical: bool = True if self.width < self.height else False
         self.is_square: bool = True if self.width == self.height else False
