@@ -46,6 +46,10 @@ class Rectangle:
             self.NW == other.NW else False
 
     def sort_nodes(self, nodes: List[Node]) -> Tuple[Node]:
+        for node in nodes:
+            if not isinstance(node, Node):
+                raise ValueError(
+                    f"One of the corners is not of type {type(Node)}")
         a, b, c, d = nodes
         min_x = min(a.x, b.x, c.x, d.x)
         max_x = max(a.x, b.x, c.x, d.x)

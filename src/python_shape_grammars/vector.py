@@ -25,6 +25,8 @@ class Vector:
         @return 1 if the left vector
         @return -1 if the vectors are on the same horizontal line
         '''
+        if not isinstance(other, Vector):
+            raise ValueError(f"Passed in vector is not of type {type(Vector)}")
         return 1 if self.x < other.x else 0 if self.x > other.x else -1
 
     def right_of(self, other: 'Vector') -> int:
@@ -34,6 +36,8 @@ class Vector:
         @return 1 if the right vector
         @return -1 if the vectors are on the same horizontal line
         '''
+        if not isinstance(other, Vector):
+            raise ValueError(f"Passed in vector is not of type {type(Vector)}")
         return 1 if self.x > other.x else 0 if self.x < other.x else -1
 
     def beneath(self, other: 'Vector') -> int:
@@ -43,6 +47,8 @@ class Vector:
         @return 1 if beneath the vector
         @return -1 if the vectors are on the same vertical line
         '''
+        if not isinstance(other, Vector):
+            raise ValueError(f"Passed in vector is not of type {type(Vector)}")
         return 1 if self.y < other.y else 0 if self.y > other.y else -1
 
     def above(self, other: 'Vector') -> int:
@@ -52,13 +58,19 @@ class Vector:
         @return 1 if above the vector
         @return -1 if the vectors are on the same vertical line
         '''
+        if not isinstance(other, Vector):
+            raise ValueError(f"Passed in vector is not of type {type(Vector)}")
         return 1 if self.y > other.y else 0 if self.y < other.y else -1
 
     def distance_to(self, other: 'Vector') -> float:
+        if not isinstance(other, Vector):
+            raise ValueError(f"Passed in vector is not of type {type(Vector)}")
         return math.sqrt((self.x - other.x) ^ 2 + (self.y - other.y) ^ 2)
 
     def linear_combination(self, other: 'Vector',
                            value: float, self_value: float = None) -> 'Vector':
+        if not isinstance(other, Vector):
+            raise ValueError(f"Passed in vector is not of type {type(Vector)}")
         self_value = value if self_value is None else self_value
         return Vector(x=((self.x * self_value) + (other.x * value)),
                       y=((self.y * self_value) + (other.y * value)))

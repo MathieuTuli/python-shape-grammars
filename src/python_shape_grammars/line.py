@@ -46,6 +46,8 @@ class Line:
         '''Threshold is used because the points we used are floats, so we might
         not fall exactlly on the line
         '''
+        if not isinstance(vector, Vector):
+            raise ValueError(f"Passed in vector is not of type {type(Vector)}")
         return True if \
             vector.y <= (((self.m * vector.x) + self.b) + threshold) and \
             vector.y >= (((self.m * vector.x) + self.b) - threshold) else False
@@ -54,6 +56,8 @@ class Line:
         '''Threshold is used because the points we used are floats, so we might
         not fall exactlly on the line
         '''
+        if not isinstance(vector, Vector):
+            raise ValueError(f"Passed in vector is not of type {type(Vector)}")
         return True if \
             (vector.x <= self.midpoint.x + threshold) and \
             (vector.x >= self.midpoint.x - threshold) else False

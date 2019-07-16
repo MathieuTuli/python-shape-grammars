@@ -67,6 +67,16 @@ class Node:
                  direction: EdgeDirection,
                  edge: Edge,
                  transformation: Optional[Transformation] = None) -> None:
+        if not isinstance(direction, EdgeDirection):
+            raise ValueError(
+                f"Passed in direction is not of type {type(EdgeDirection)}")
+        if not isinstance(edge, Edge):
+            raise ValueError(
+                f"Passed in edge is not of type {type(Edge)}")
+        if not isinstance(transformation, Transformation):
+            raise ValueError(
+                "Passed in transformation is not of type " +
+                f"{type(Transformation)}")
         if transformation:
             self.neighbour_edges[direction.integer_value] = transformation(
                 edge)
@@ -78,6 +88,13 @@ class Node:
             direction: EdgeDirection,
             transformation: Optional[Transformation] = None) -> \
             Optional['Edge']:
+        if not isinstance(direction, EdgeDirection):
+            raise ValueError(
+                f"Passed in direction is not of type {type(EdgeDirection)}")
+        if not isinstance(transformation, Transformation):
+            raise ValueError(
+                "Passed in transformation is not of type " +
+                f"{type(Transformation)}")
         neighbour_edge = self.neighbour_edges[direction.integer_value]
         if neighbour_edge:
             if transformation:
@@ -89,6 +106,13 @@ class Node:
             direction: EdgeDirection,
             transformation: Optional[Transformation] = None) -> \
             Optional['Node']:
+        if not isinstance(direction, EdgeDirection):
+            raise ValueError(
+                f"Passed in direction is not of type {type(EdgeDirection)}")
+        if not isinstance(transformation, Transformation):
+            raise ValueError(
+                "Passed in transformation is not of type " +
+                f"{type(Transformation)}")
         neighbour_edge = self.neighbour_edges[direction.integer_value]
         if neighbour_edge:
             if transformation:

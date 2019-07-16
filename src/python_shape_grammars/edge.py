@@ -91,4 +91,7 @@ class Edge:
         This is used to determine whether or nota door/window belongs to this
         edge
         '''
+        if not isinstance(rectangle, Rectangle):
+            raise ValueError(
+                f"Rectangle passed in not of type {type(Rectangle)}")
         return self.line.intersects(rectangle)
