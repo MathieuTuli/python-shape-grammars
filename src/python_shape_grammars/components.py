@@ -45,6 +45,3 @@ class Window:
 
 class Door:
     pass
-
-
-class Rectangle

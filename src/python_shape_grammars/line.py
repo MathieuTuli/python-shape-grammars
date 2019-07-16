@@ -6,7 +6,8 @@ from .vector import Vector
 
 
 class Line:
-    def __init__(self, vector_a: Vector, vector_b: Vector) -> None:
+    def __init__(self, vector_a: Vector, vector_b: Vector,
+                 thickness: int) -> None:
         self.vector_a: Vector = vector_a
         self.vector_b: Vector = vector_b
 
