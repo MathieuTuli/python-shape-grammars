@@ -2,6 +2,6 @@
 '''
 
 
-class Layout:
+class FloorPlan:
     def __init__(self,) -> None:
         pass
