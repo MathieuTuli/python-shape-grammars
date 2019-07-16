@@ -38,6 +38,13 @@ class Rectangle:
                 + ", ({self.SW.vector.x}, {self.SW.vector.y})"
                 + ", ({self.NW.vector.x}, {self.NW.vector.y})]")
 
+    def __eq__(self, other: 'Rectangle') -> bool:
+        return True if self.NE == other.NE and \
+            self.SE == other.SE and \
+            self.SW == other.SW and \
+            self.NW == other.NW and \
+            isinstance(other, Rectangle) else False
+
     def sort_nodes(self, nodes: List[Node]) -> Tuple[Node]:
         a, b, c, d = nodes
         min_x = min(a.x, b.x, c.x, d.x)

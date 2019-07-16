@@ -20,6 +20,14 @@ class Room(Rectangle):
                 "The label_node is not in the midpoint of the rectangle")
         self.label_node = label_node
 
+    def __eq__(self, other: 'Room') -> bool:
+        return True if self.NE == other.NE and \
+            self.SE == other.SE and \
+            self.SW == other.SW and \
+            self.NW == other.NW and \
+            self.label_node == other.label_node and \
+            isinstance(other, Room) else False
+
     def __str__(self) -> str:
         return (f"Room defined by"
                 + " [({self.NE.vector.x}, {self.NE.vector.y})"

@@ -60,7 +60,8 @@ class Node:
     def __eq__(self, other: 'Node') -> bool:
         return True if self.neighbour_edges == other.neighbour_edges and \
             self.vector == other.vector and self.type == other.type and \
-            self.node_counter == other.node_count else False
+            self.node_counter == other.node_count and \
+            isinstance(other, Node) else False
 
     def add_edge(self,
                  direction: EdgeDirection,

@@ -46,7 +46,8 @@ class Edge:
             self.type == other.type and \
             self.doors == other.doors and \
             self.windows == other.windows and \
-            self.edge_count == other.edge_count else False
+            self.edge_count == other.edge_count and \
+            isinstance(other, Edge) else False
 
     def get_left_node(self) -> Optional[Node]:
         return self.line.left_node
