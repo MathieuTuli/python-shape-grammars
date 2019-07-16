@@ -5,8 +5,8 @@ import math
 
 class Vector:
     def __init__(self, x: float, y: float) -> None:
-        self.x = float(x)
-        self.y = float(y)
+        self.x: float = float(x)
+        self.y: float = float(y)
 
     def __str__(self) -> str:
         return f"Vector ({self.x},{self.y})"

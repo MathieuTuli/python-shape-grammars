@@ -49,8 +49,8 @@ class Node:
         # The following initializes the empty neighbour array
         self.neighbour_edges: List[Edge] = [None] * 8
         self.vector: Vector = vector
-        self.type = node_type
-        self.node_count = Node.node_counter
+        self.type: str = node_type
+        self.node_count: int = Node.node_counter
         Node.node_counter += 1
         pass
 

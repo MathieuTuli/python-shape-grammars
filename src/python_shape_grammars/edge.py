@@ -23,13 +23,13 @@ class Edge:
                  node_b: Node,
                  doors: List[Door] = None,
                  windows: List[Window] = None) -> None:
-        self.type = edge_type
-        self.node_a = node_a
-        self.node_b = node_b
-        self.line = Line(node_a.vector, node_b.vector)
-        self.doors = doors
-        self.windows = windows
-        self.edge_count = Edge.edge_counter
+        self.type: str = edge_type
+        self.node_a: Node = node_a
+        self.node_b: Node = node_b
+        self.line: Line = Line(node_a.vector, node_b.vector)
+        self.doors: List[Door] = doors
+        self.windows: List[Window] = windows
+        self.edge_count: int = Edge.edge_counter
         Edge.edge_counter += 1
 
     def __str__(self) -> str:
