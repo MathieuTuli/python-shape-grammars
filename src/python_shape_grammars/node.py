@@ -58,10 +58,10 @@ class Node:
         return f"Node {self.node_count} - {self.id} @ {self.point}"
 
     def __eq__(self, other: 'Node') -> bool:
-        return True if self.neighbour_edges == other.neighbour_edges and \
+        return False if not isinstance(other, Node) else \
+            True if self.neighbour_edges == other.neighbour_edges and \
             self.vector == other.vector and self.type == other.type and \
-            self.node_counter == other.node_count and \
-            isinstance(other, Node) else False
+            self.node_counter == other.node_count else False
 
     def add_edge(self,
                  direction: EdgeDirection,

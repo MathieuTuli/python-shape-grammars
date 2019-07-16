@@ -39,11 +39,11 @@ class Rectangle:
                 + ", ({self.NW.vector.x}, {self.NW.vector.y})]")
 
     def __eq__(self, other: 'Rectangle') -> bool:
-        return True if self.NE == other.NE and \
+        return False if not isinstance(other, Rectangle) else \
+            True if self.NE == other.NE and \
             self.SE == other.SE and \
             self.SW == other.SW and \
-            self.NW == other.NW and \
-            isinstance(other, Rectangle) else False
+            self.NW == other.NW else False
 
     def sort_nodes(self, nodes: List[Node]) -> Tuple[Node]:
         a, b, c, d = nodes

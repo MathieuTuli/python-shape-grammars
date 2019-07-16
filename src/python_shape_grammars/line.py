@@ -39,8 +39,8 @@ class Line:
         return self.vector_a.distance_to(self.vector_b)
 
     def __eq__(self, other: 'Line') -> bool:
-        return True if self.vector_a == self.vector_b and \
-            isinstance(other, Line) else False
+        return False if not isinstance(other, Line) else \
+            True if self.vector_a == self.vector_b else False
 
     def contains(self, vector: Vector, threshold: float) -> bool:
         '''Threshold is used because the points we used are floats, so we might
