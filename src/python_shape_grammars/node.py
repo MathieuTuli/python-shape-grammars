@@ -52,7 +52,6 @@ class Node:
         self.vector: Vector = vector
         self.node_count: int = Node.node_counter
         Node.node_counter += 1
-        pass
 
     def __str__(self) -> str:
         return (f"{type(self).__name } {self.node_count} - {self.name}" +

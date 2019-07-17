@@ -67,3 +67,11 @@ class Rectangle:
                 f"\nSW: ({SW.x}, {SW.y})" +
                 f"\nNW: ({NW.x}, {NW.y})")
         return (NE, SE, SW, NW)
+
+    def overlap_with(self, other: 'Rectangle') -> bool:
+        '''Checks if this rectangle overlaps with another
+        '''
+        if self.NW.x > other.SE.x or other.NW.x > self.SE.x or \
+                self.NW.y < other.SE.y or other.NW.y < self.SE.y:
+            return False
+        return True

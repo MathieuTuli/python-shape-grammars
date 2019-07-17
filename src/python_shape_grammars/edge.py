@@ -6,8 +6,11 @@
 '''
 from typing import List, Optional
 
-from .components import EdgeType, Door, Window, Rectangle
+from .components import EdgeType
+from .rectangle import Rectangle
+from .window import Window
 from .vector import Vector
+from .door import Door
 from .line import Line
 from .node import Node
 
