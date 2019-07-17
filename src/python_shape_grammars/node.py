@@ -45,8 +45,9 @@ class Node:
     '''
     node_counter = 0
 
-    def __init__(self, vector: Vector) -> None:
+    def __init__(self, vector: Vector, name: str) -> None:
         # The following initializes the empty neighbour array
+        self.name = name
         self.neighbour_edges: List[Edge] = [None] * 8
         self.vector: Vector = vector
         self.node_count: int = Node.node_counter
@@ -61,7 +62,8 @@ class Node:
         return False if not isinstance(other, Node) else \
             self.neighbour_edges == other.neighbour_edges and \
             self.vector == other.vector and \
-            self.node_counter == other.node_count
+            self.node_counter == other.node_count and \
+            self.name == other.name
 
     def add_edge(self,
                  direction: EdgeDirection,
@@ -128,8 +130,9 @@ class RoomNode(Node):
     '''Extends Node, just mostly for typing reasons'''
 
     def __init__(self, vector: Vector,
+                 name: str,
                  room_type: RoomType = RoomType()) -> None:
-        Node.__init__(vector)
+        Node.__init__(vector, name)
         self.room_type = room_type
 
     def __str__(self) -> str:
@@ -141,4 +144,5 @@ class RoomNode(Node):
             self.neighbour_edges == other.neighbour_edges and \
             self.vector == other.vector and \
             self.node_counter == other.node_count and \
-            self.room_type == other.room_type
+            self.room_type == other.room_type and \
+            self.name == other.name
