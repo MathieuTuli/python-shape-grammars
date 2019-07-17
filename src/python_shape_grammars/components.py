@@ -57,3 +57,16 @@ class RoomType(TypedTuple):
         if value not in room_types:
             raise ValueError(f"Argument room_type must be one of {room_types}")
         return value
+
+
+class FloorPlanStatus(TypedTuple):
+    '''Defining Room Types
+    '''
+    value = str
+
+    def _parse_value(value):
+        status_types = ['start', 'generating', 'done']
+        if value not in status_types:
+            raise ValueError(
+                f"Argument room_type must be one of {status_types}")
+        return value

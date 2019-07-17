@@ -26,7 +26,7 @@ class Edge:
                  windows: List[Window] = None,
                  thickness: int = 1) -> None:
         self.name = name
-        self.type: str = edge_type
+        self.type: str = edge_type.value
         self.node_a: Node = node_a
         self.node_b: Node = node_b
         self.line: Line = Line(node_a.vector, node_b.vector, thickness)

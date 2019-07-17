@@ -2,6 +2,7 @@
 '''
 from typing import List, Optional, Tuple
 
+from .components import FloorPlanStatus
 from .edge import Edge
 from .node import Node
 from .room import Room
@@ -10,13 +11,15 @@ from .room import Room
 class FloorPlan:
     def __init__(self,
                  name: str,
-                 status: str,
-                 starting_nodes: List[Node],
+                 status: FloorPlanStatus,
+                 starting_nodes: List[Node] = list(),
+                 starting_edges: List[Edge] = list(),
                  starting_rooms: List[Room] = list()) -> None:
         self.name = name
-        self.status = status
-        self.rooms: List[Room] = starting_rooms
+        self.status = status.value
         self.nodes: List[Node] = starting_nodes
+        self.edges: List[Edge] = starting_edges
+        self.rooms: List[Room] = starting_rooms
 
     def __str__(self) -> str:
         return f"{type(self).__name__} {self.name} in {self.status}"
@@ -24,6 +27,9 @@ class FloorPlan:
     def add_room(self, room: Room) -> None:
         if not isinstance(room, Room):
             raise ValueError(f"Cannot add room not of type {type(Room)}")
+        for existing_room in self.rooms:
+            if existing_room.label_node.name == room.label_node.name:
+                raise ValueError("Trying to add a room with duplicate name")
         self.rooms.append(room)
 
     def remove_room(self, room: Room) -> bool:
@@ -68,6 +74,9 @@ class FloorPlan:
     def add_node(self, node: Node) -> None:
         if not isinstance(node, Room):
             raise ValueError(f"Cannot add node not of type {type(Node)}")
+        for existing_node in self.nodes:
+            if existing_node.name == node.name:
+                raise ValueError("Trying to add a node with duplicate name")
         self.nodes.append(node)
 
     def remove_node(self, node: Node) -> bool:
@@ -112,6 +121,9 @@ class FloorPlan:
     def add_edge(self, edge: Edge) -> None:
         if not isinstance(edge, Edge):
             raise ValueError(f"Cannot add edge not of type {type(Edge)}")
+        for existing_edge in self.edges:
+            if existing_edge.name == edge.name:
+                raise ValueError("Trying to add a edge with duplicate name")
         self.edges.append(edge)
 
     def remove_edge(self, edge: Edge) -> bool:

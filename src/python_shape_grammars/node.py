@@ -131,9 +131,9 @@ class RoomNode(Node):
 
     def __init__(self, vector: Vector,
                  name: str,
-                 room_type: RoomType = RoomType()) -> None:
+                 room_type: RoomType) -> None:
         Node.__init__(vector, name)
-        self.room_type = room_type
+        self.room_type = room_type.value
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} {self.node_count} - {self.name} -"
