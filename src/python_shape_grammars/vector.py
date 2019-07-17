@@ -16,7 +16,7 @@ class Vector:
 
     def __eq__(self, other: 'Vector') -> bool:
         return False if not isinstance(other, Vector) else \
-            True if self.x == other.x and self.y == other.y else False
+            self.x == other.x and self.y == other.y
 
     def left_of(self, other: 'Vector') -> int:
         '''Returns int whether or not the vector is the left of the other

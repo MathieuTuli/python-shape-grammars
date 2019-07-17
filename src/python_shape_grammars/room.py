@@ -26,11 +26,11 @@ class Room(Rectangle):
 
     def __eq__(self, other: 'Room') -> bool:
         return False if not isinstance(other, Room) else \
-            True if self.NE == other.NE and \
+            self.NE == other.NE and \
             self.SE == other.SE and \
             self.SW == other.SW and \
             self.NW == other.NW and \
-            self.label_node == other.label_node else False
+            self.label_node == other.label_node
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} defined by"

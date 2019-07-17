@@ -27,9 +27,9 @@ class Rectangle:
         self.height: float = NE.y - SE.y
 
         # TODO need to define allowable labels
-        self.is_horizontal: bool = True if self.width > self.height else False
-        self.is_vertical: bool = True if self.width < self.height else False
-        self.is_square: bool = True if self.width == self.height else False
+        self.is_horizontal: bool = self.width > self.height
+        self.is_vertical: bool = self.width < self.height
+        self.is_square: bool = self.width == self.height
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} defined by"
@@ -40,10 +40,10 @@ class Rectangle:
 
     def __eq__(self, other: 'Rectangle') -> bool:
         return False if not isinstance(other, Rectangle) else \
-            True if self.NE == other.NE and \
+            self.NE == other.NE and \
             self.SE == other.SE and \
             self.SW == other.SW and \
-            self.NW == other.NW else False
+            self.NW == other.NW
 
     def sort_nodes(self, nodes: List[Node]) -> Tuple[Node]:
         for node in nodes:

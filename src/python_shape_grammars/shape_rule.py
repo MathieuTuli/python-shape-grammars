@@ -11,7 +11,7 @@ class ShapeRule:
         self.name = name
 
     def __str__(self) -> str:
-        return f"ShapeRule {self.name}"
+        return f"{type(self).__name__} {self.name}"
 
     def apply(self, layout: Layout) -> Layout:
         pass

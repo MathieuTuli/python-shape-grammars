@@ -59,9 +59,9 @@ class Node:
 
     def __eq__(self, other: 'Node') -> bool:
         return False if not isinstance(other, Node) else \
-            True if self.neighbour_edges == other.neighbour_edges and \
+            self.neighbour_edges == other.neighbour_edges and \
             self.vector == other.vector and \
-            self.node_counter == other.node_count else False
+            self.node_counter == other.node_count
 
     def add_edge(self,
                  direction: EdgeDirection,
@@ -138,7 +138,7 @@ class RoomNode(Node):
 
     def __eq__(self, other: 'Node') -> bool:
         return False if not isinstance(other, Node) else \
-            True if self.neighbour_edges == other.neighbour_edges and \
+            self.neighbour_edges == other.neighbour_edges and \
             self.vector == other.vector and \
             self.node_counter == other.node_count and \
-            self.room_type == other.room_typ else False
+            self.room_type == other.room_type

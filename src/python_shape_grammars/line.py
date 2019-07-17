@@ -16,14 +16,14 @@ class Line:
             1 else vector_a if ret else vector_b
         self.right_node: Optional[Vector] = None if ret == - \
             1 else vector_b if ret else vector_a
-        self.is_horizontal: bool = True if ret == -1 else False
+        self.is_horizontal: bool = ret == -1
 
         ret = vector_a.beneath(vector_b)
         self.bottom_node: Optional[Vector] = None if ret == - \
             1 else vector_a if ret else vector_b
         self.upper_node: Optional[Vector] = None if ret == - \
             1 else vector_b if ret else vector_a
-        self.is_vertical: bool = True if ret == -1 else False
+        self.is_vertical: bool = ret == -1
 
         # defining equation
         self.m: float = (vector_b.y - vector_a.y) / (vector_b.x - vector_a.x)
@@ -40,7 +40,7 @@ class Line:
 
     def __eq__(self, other: 'Line') -> bool:
         return False if not isinstance(other, Line) else \
-            True if self.vector_a == self.vector_b else False
+            self.vector_a == self.vector_b
 
     def contains(self, vector: Vector, threshold: float) -> bool:
         '''Threshold is used because the points we used are floats, so we might
@@ -48,9 +48,9 @@ class Line:
         '''
         if not isinstance(vector, Vector):
             raise ValueError(f"Passed in vector is not of type {type(Vector)}")
-        return True if \
+        return \
             vector.y <= (((self.m * vector.x) + self.b) + threshold) and \
-            vector.y >= (((self.m * vector.x) + self.b) - threshold) else False
+            vector.y >= (((self.m * vector.x) + self.b) - threshold)
 
     def is_on_midpoint(self, vector: Vector, threshold: float) -> bool:
         '''Threshold is used because the points we used are floats, so we might
@@ -58,6 +58,6 @@ class Line:
         '''
         if not isinstance(vector, Vector):
             raise ValueError(f"Passed in vector is not of type {type(Vector)}")
-        return True if \
+        return \
             (vector.x <= self.midpoint.x + threshold) and \
-            (vector.x >= self.midpoint.x - threshold) else False
+            (vector.x >= self.midpoint.x - threshold)
