@@ -34,8 +34,8 @@ class Edge:
         Edge.edge_counter += 1
 
     def __str__(self) -> str:
-        return (f"Edge {self.edge_count} {self.type} connected by"
-                + " {self.node_a} and {self.node_b}")
+        return (f"{type(self).__name__} {self.edge_count} {self.type} "
+                + " connected by {self.node_a} and {self.node_b}")
 
     def __len__(self) -> float:
         return len(self.line)

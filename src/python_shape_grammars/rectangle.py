@@ -32,7 +32,7 @@ class Rectangle:
         self.is_square: bool = True if self.width == self.height else False
 
     def __str__(self) -> str:
-        return (f"Rectangle defined by"
+        return (f"{type(self).__name__} defined by"
                 + " [({self.NE.vector.x}, {self.NE.vector.y})"
                 + ", ({self.SE.vector.x}, {self.SE.vector.y})"
                 + ", ({self.SW.vector.x}, {self.SW.vector.y})"

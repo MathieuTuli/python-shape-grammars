@@ -1,3 +1,9 @@
+# from collections import dataclass
+
+from .typed_tuple import TypedTuple
+from .vector import Vector
+
+
 class EdgeDirection:
     def __init__(self, direction: str):
         if direction == 'N':
@@ -31,17 +37,23 @@ class EdgeDirection:
                 " ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']")
 
 
-class NodeType:
-    pass
+class EdgeType(TypedTuple):
+    value = str
+
+    def _parse_value(value):
+        values = ['wall', 'empty', 'label edge']
+        if value not in values:
+            raise ValueError(f"Edge Type must be one of {values}")
+        return value
 
 
-class EdgeType:
-    pass
+class RoomType(TypedTuple):
+    '''Defining Room Types
+    '''
+    value = str
 
-
-class Window:
-    pass
-
-
-class Door:
-    pass
+    def _parse_value(value):
+        room_types = ['kitchen', 'hallway', 'dining room', 'living room']
+        if value not in room_types:
+            raise ValueError(f"Argument room_type must be one of {room_types}")
+        return value

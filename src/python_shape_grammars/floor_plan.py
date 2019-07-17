@@ -15,7 +15,7 @@ class FloorPlan:
         self.rooms: List[Room] = starting_rooms
 
     def __str__(self) -> str:
-        return f"FloorPlan {self.name} in {self.status}"
+        return f"{type(self).__name__} {self.name} in {self.status}"
 
     def add_room(self, room: Room) -> None:
         if not isinstance(room, Room):

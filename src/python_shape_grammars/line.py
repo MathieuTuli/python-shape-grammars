@@ -33,7 +33,7 @@ class Line:
             vector_b, value=0.5)
 
     def __str__(self) -> str:
-        return f"Line from {self.vector_a} to {self.vector_b}"
+        return f"{type(self).__name__} from {self.vector_a} to {self.vector_b}"
 
     def __len__(self) -> float:
         return self.vector_a.distance_to(self.vector_b)

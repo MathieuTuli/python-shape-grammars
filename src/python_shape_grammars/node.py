@@ -6,7 +6,7 @@
 '''
 from typing import List, Optional
 
-from .components import NodeType, EdgeDirection
+from .components import EdgeDirection, RoomType
 from .transformations import Transformation
 from .vector import Vector
 from .edge import Edge
@@ -45,28 +45,30 @@ class Node:
     '''
     node_counter = 0
 
-    def __init__(self, vector: Vector, node_type: NodeType) -> None:
+    def __init__(self, vector: Vector) -> None:
         # The following initializes the empty neighbour array
         self.neighbour_edges: List[Edge] = [None] * 8
         self.vector: Vector = vector
-        self.type: str = node_type
         self.node_count: int = Node.node_counter
         Node.node_counter += 1
         pass
 
     def __str__(self) -> str:
-        return f"Node {self.node_count} - {self.id} @ {self.point}"
+        return (f"{type(self).__name } {self.node_count} -" +
+                " {self.id} @ {self.point}")
 
     def __eq__(self, other: 'Node') -> bool:
         return False if not isinstance(other, Node) else \
             True if self.neighbour_edges == other.neighbour_edges and \
-            self.vector == other.vector and self.type == other.type and \
+            self.vector == other.vector and \
             self.node_counter == other.node_count else False
 
     def add_edge(self,
                  direction: EdgeDirection,
                  edge: Edge,
                  transformation: Optional[Transformation] = None) -> None:
+        if len(self.neighbour_edges) == 8:
+            raise ValueError("Already have 8 edges")
         if not isinstance(direction, EdgeDirection):
             raise ValueError(
                 f"Passed in direction is not of type {type(EdgeDirection)}")
@@ -120,3 +122,23 @@ class Node:
                     neighbour_edge.get_other_node(self.node_counter))
             return neighbour_edge.get_other_node(self.node_counter)
         return
+
+
+class RoomNode(Node):
+    '''Extends Node, just mostly for typing reasons'''
+
+    def __init__(self, vector: Vector,
+                 room_type: RoomType = RoomType()) -> None:
+        Node.__init__(vector)
+        self.room_type = room_type
+
+    def __str__(self) -> str:
+        return (f"{type(self).__name__} {self.node_count} - {self.room_type}"
+                + " - {self.id} @ {self.point}")
+
+    def __eq__(self, other: 'Node') -> bool:
+        return False if not isinstance(other, Node) else \
+            True if self.neighbour_edges == other.neighbour_edges and \
+            self.vector == other.vector and \
+            self.node_counter == other.node_count and \
+            self.room_type == other.room_typ else False
