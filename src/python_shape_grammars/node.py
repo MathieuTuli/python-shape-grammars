@@ -55,7 +55,7 @@ class Node:
         pass
 
     def __str__(self) -> str:
-        return (f"{type(self).__name } {self.node_count} -" +
+        return (f"{type(self).__name } {self.node_count} - {self.name}" +
                 " {self.id} @ {self.point}")
 
     def __eq__(self, other: 'Node') -> bool:
@@ -136,8 +136,8 @@ class RoomNode(Node):
         self.room_type = room_type
 
     def __str__(self) -> str:
-        return (f"{type(self).__name__} {self.node_count} - {self.room_type}"
-                + " - {self.id} @ {self.point}")
+        return (f"{type(self).__name__} {self.node_count} - {self.name} -"
+                + " {self.room_type} - {self.id} @ {self.point}")
 
     def __eq__(self, other: 'Node') -> bool:
         return False if not isinstance(other, Node) else \

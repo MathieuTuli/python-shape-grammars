@@ -19,11 +19,13 @@ class Edge:
 
     def __init__(self,
                  edge_type: EdgeType,
+                 name: str,
                  node_a: Node,
                  node_b: Node,
                  doors: List[Door] = None,
                  windows: List[Window] = None,
                  thickness: int = 1) -> None:
+        self.name = name
         self.type: str = edge_type
         self.node_a: Node = node_a
         self.node_b: Node = node_b
@@ -34,8 +36,8 @@ class Edge:
         Edge.edge_counter += 1
 
     def __str__(self) -> str:
-        return (f"{type(self).__name__} {self.edge_count} {self.type} "
-                + " connected by {self.node_a} and {self.node_b}")
+        return (f"{type(self).__name__} {self.edge_count} - {self.name} -"
+                + " {self.type} connected by {self.node_a} and {self.node_b}")
 
     def __len__(self) -> float:
         return len(self.line)
@@ -47,7 +49,8 @@ class Edge:
             self.type == other.type and \
             self.doors == other.doors and \
             self.windows == other.windows and \
-            self.edge_count == other.edge_count
+            self.edge_count == other.edge_count and \
+            self.name == other.name
 
     def get_left_node(self) -> Optional[Node]:
         return self.line.left_node
