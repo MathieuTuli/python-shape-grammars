@@ -4,9 +4,7 @@ extends the Rectangle class
 '''
 from typing import List
 
-from .staircase import Staircase
-from .rectangle import Rectangle
-from .node import RoomNode, Node
+from .graph_elements import RoomNode, Node, Rectangle, Staircase
 
 
 class Room(Rectangle):

@@ -6,7 +6,7 @@ vector value
 '''
 from typing import List, Tuple
 
-from .node import Node
+from .graph_elements import Node
 
 
 class Rectangle:
@@ -75,3 +75,18 @@ class Rectangle:
                 self.NW.y < other.SE.y or other.NW.y < self.SE.y:
             return False
         return True
+
+
+class Window(Rectangle):
+    def __init__(self, corners: List[Node]):
+        Rectangle.__init__(corners)
+
+
+class Door(Rectangle):
+    def __init__(self, corners: List[Node]):
+        Rectangle.__init__(corners)
+
+
+class Staircase(Rectangle):
+    def __init__(self, corners: List[Node]):
+        Rectangle.__init__(corners)

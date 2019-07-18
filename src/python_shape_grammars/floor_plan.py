@@ -3,8 +3,7 @@
 from typing import List, Optional, Tuple
 
 from .components import FloorPlanStatus
-from .edge import Edge
-from .node import Node
+from .graph_elements import Edge, Node
 from .room import Room
 
 
