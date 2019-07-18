@@ -1,0 +1,3 @@
+PyQt5==5.13.0
+PyQt5-sip==4.19.18
+-e git+https://github.com/MathieuTuli/python-shape-grammars.git@030d951882b4ea0e4e7ba54b56931527a55a3795#egg=python_shape_grammars
