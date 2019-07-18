@@ -4,7 +4,7 @@ extends the Rectangle class
 '''
 from typing import List
 
-from .graph_elements import RoomNode, Node, Rectangle, Staircase
+from .floor_plan_elements import RoomNode, Node, Rectangle, Staircase
 
 
 class Room(Rectangle):
@@ -13,7 +13,7 @@ class Room(Rectangle):
 
     def __init__(self, corners: List[Node],
                  label_node: RoomNode,
-                 staircase: Staircase) -> None:
+                 staircase: Staircase = None) -> None:
         Rectangle.__init__(corners)
         if label_node.x != (self.NE.x - self.NW.x) and \
                 label_node.y != (self.NE.y - self.SE.y):
@@ -28,7 +28,8 @@ class Room(Rectangle):
             self.SE == other.SE and \
             self.SW == other.SW and \
             self.NW == other.NW and \
-            self.label_node == other.label_node
+            self.label_node == other.label_node and \
+            self.staircase == other.staircase
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} defined by"

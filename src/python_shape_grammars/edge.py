@@ -6,7 +6,7 @@
 '''
 from typing import List, Optional
 
-from .graph_elements import Rectangle, Door, Window
+from .floor_plan_elements import Rectangle, Door, Window
 from .components import EdgeType
 from .vector import Vector
 from .line import Line
