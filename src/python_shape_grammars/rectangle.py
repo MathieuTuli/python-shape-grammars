@@ -6,7 +6,7 @@ vector value
 '''
 from typing import List, Tuple
 
-from .graph_elements import Node
+from .floor_plan_elements import Node
 
 
 class Rectangle:
