@@ -1,9 +1,11 @@
 '''A floor plan layout
 '''
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 
 from .components import FloorPlanStatus
 from .floor_plan_elements import Edge, Node
+from .helper import check_argument_uniqueness
+from .vector import Vector
 from .room import Room
 
 
@@ -70,22 +72,42 @@ class FloorPlan:
                 return room, False
         return None, True
 
-    def add_node(self, node: Node) -> None:
-        if not isinstance(node, Room):
-            raise ValueError(f"Cannot add node not of type {type(Node)}")
-        for existing_node in self.nodes:
-            if existing_node.name == node.name:
-                raise ValueError("Trying to add a node with duplicate name")
-        self.nodes.append(node)
+    def add_node(self,
+                 node: Optional[Union] = None,
+                 vector: Optional[Vector] = None,
+                 points: Optional[Tuple[float, float]] = None) -> bool:
+        check_argument_uniqueness(node, vector, points)
+        if node is not None and isinstance(node, Node):
+            for existing_node in self.nodes:
+                if existing_node.name == node.name:
+                    return False
 
-    def remove_node(self, node: Node) -> bool:
-        if not isinstance(node, Node):
-            raise ValueError(f"Cannot remove node not of type {type(Node)}")
-        try:
+        elif vector is not None and isinstance(vector, Vector):
+            node = Node(vector)
+        elif points is not None and isinstance(points, tuple):
+            node = Node(points)
+        else:
+            raise ValueError(f"Cannot add node not of type {type(Node)}")
+        self.nodes.append(node)
+        return True
+
+    def remove_node(self,
+                    name: Optional[str] = None,
+                    node: Optional[Union] = None,
+                    vector: Optional[Vector] = None,
+                    points: Optional[Tuple[float, float]] = None) -> bool:
+        check_argument_uniqueness(name, node, vector, points)
+        if name is not None and isinstance(name, str):
+            pass
+        if node is not None and isinstance(node, Node):
             self.node.remove(node)
-            return True
-        except ValueError:
-            return False
+        elif vector is not None and isinstance(vector, Vector):
+            pass
+        elif points is not None and isinstance(points, tuple):
+            pass
+        else:
+            raise ValueError(f"Cannot remove node not of type {type(Node)}")
+        return True
 
     def node_exists(self, node: Node) -> bool:
         if not isinstance(node, Node):

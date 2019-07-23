@@ -21,6 +21,7 @@ vector value
 from typing import List, Tuple, Optional
 from .components import EdgeDirection, RoomType, EdgeType
 from .transformations import Transformation
+from .helper import check_argument_uniqueness
 from .vector import Vector
 from .line import Line
 
@@ -147,10 +148,16 @@ class Node:
     '''
     node_counter = 0
 
-    def __init__(self, vector: Vector, name: str) -> None:
-        # The following initializes the empty neighbour array
+    def __init__(self, name: str, vector: Optional(Vector) = None,
+                 points: Optional[Tuple[float, float]] = None) -> None:
+        check_argument_uniqueness(vector, points)
         self.name = name
+        # The following initializes the empty neighbour array
         self.neighbour_edges: List[Edge] = [None] * 8
+        if vector is not None and isinstance(vector, Vector):
+            pass
+        elif points is not None and isinstance(points, tuple):
+            pass
         self.vector: Vector = vector
         self.node_count: int = Node.node_counter
         Node.node_counter += 1
