@@ -63,7 +63,8 @@ class Edge:
             self.doors == other.doors and \
             self.windows == other.windows and \
             self.edge_count == other.edge_count and \
-            self.name == other.name
+            self.name == other.name and \
+            type(self).__name__ == type(other).__name__
 
     def get_left_node(self) -> Optional['Node']:
         return self.line.left_node
@@ -163,7 +164,8 @@ class Node:
             self.neighbour_edges == other.neighbour_edges and \
             self.vector == other.vector and \
             self.node_counter == other.node_count and \
-            self.name == other.name
+            self.name == other.name and \
+            type(self).__name__ == type(other).__name__
 
     def add_edge(self,
                  direction: EdgeDirection,
@@ -245,7 +247,24 @@ class RoomNode(Node):
             self.vector == other.vector and \
             self.node_counter == other.node_count and \
             self.room_type == other.room_type and \
-            self.name == other.name
+            self.name == other.name and \
+            type(self).__name__ == type(other).__name__
+
+
+class CornerNode(Node):
+    '''Extends Node, just mostly for typing reasons'''
+
+    def __init__(self, vector: Vector,
+                 name: str,) -> None:
+        Node.__init__(vector, name)
+
+
+class WallNode(Node):
+    '''Extends Node, just mostly for typing reasons'''
+
+    def __init__(self, vector: Vector,
+                 name: str,) -> None:
+        Node.__init__(vector, name)
 
 
 class Rectangle:
@@ -282,7 +301,8 @@ class Rectangle:
             self.NE == other.NE and \
             self.SE == other.SE and \
             self.SW == other.SW and \
-            self.NW == other.NW
+            self.NW == other.NW and \
+            type(self).__name__ == type(other).__name__
 
     def sort_nodes(self, nodes: List[Node]) -> Tuple[Node]:
         for node in nodes:

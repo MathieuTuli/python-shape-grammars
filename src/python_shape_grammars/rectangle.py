@@ -43,7 +43,8 @@ class Rectangle:
             self.NE == other.NE and \
             self.SE == other.SE and \
             self.SW == other.SW and \
-            self.NW == other.NW
+            self.NW == other.NW and \
+            type(self).__name__ == type(other).__name__
 
     def sort_nodes(self, nodes: List[Node]) -> Tuple[Node]:
         for node in nodes:

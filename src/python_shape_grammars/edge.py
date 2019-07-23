@@ -51,7 +51,8 @@ class Edge:
             self.doors == other.doors and \
             self.windows == other.windows and \
             self.edge_count == other.edge_count and \
-            self.name == other.name
+            self.name == other.name and \
+            type(self).__name__ == type(other).__name__
 
     def get_left_node(self) -> Optional[Node]:
         return self.line.left_node

@@ -62,7 +62,8 @@ class Node:
             self.neighbour_edges == other.neighbour_edges and \
             self.vector == other.vector and \
             self.node_counter == other.node_count and \
-            self.name == other.name
+            self.name == other.name and \
+            type(self).__name__ == type(other).__name__
 
     def add_edge(self,
                  direction: EdgeDirection,
@@ -144,4 +145,5 @@ class RoomNode(Node):
             self.vector == other.vector and \
             self.node_counter == other.node_count and \
             self.room_type == other.room_type and \
-            self.name == other.name
+            self.name == other.name and \
+            type(self).__name__ == type(other).__name__

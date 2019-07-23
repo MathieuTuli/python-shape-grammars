@@ -40,7 +40,8 @@ class Line:
 
     def __eq__(self, other: 'Line') -> bool:
         return False if not isinstance(other, Line) else \
-            self.vector_a == self.vector_b
+            self.vector_a == self.vector_b and \
+            type(self).__name__ == type(other).__name__
 
     def contains(self, vector: Vector, threshold: float) -> bool:
         '''Threshold is used because the points we used are floats, so we might

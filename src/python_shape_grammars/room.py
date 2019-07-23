@@ -29,7 +29,8 @@ class Room(Rectangle):
             self.SW == other.SW and \
             self.NW == other.NW and \
             self.label_node == other.label_node and \
-            self.staircase == other.staircase
+            self.staircase == other.staircase and \
+            type(self).__name__ == type(other).__name__
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} defined by"
