@@ -1,9 +1,10 @@
 '''A floor plan layout
 '''
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple, Union, Dict
 
-from .components import FloorPlanStatus
 from .floor_plan_elements import Edge, Node
+from .components import FloorPlanStatus
+from .database import Database
 from .helper import check_argument_uniqueness
 from .vector import Vector
 from .room import Room
@@ -12,15 +13,12 @@ from .room import Room
 class FloorPlan:
     def __init__(self,
                  name: str,
-                 status: FloorPlanStatus,
-                 starting_nodes: List[Node] = list(),
-                 starting_edges: List[Edge] = list(),
-                 starting_rooms: List[Room] = list()) -> None:
+                 status: FloorPlanStatus,) -> None:
         self.name = name
         self.status = status.value
-        self.nodes: List[Node] = starting_nodes
-        self.edges: List[Edge] = starting_edges
-        self.rooms: List[Room] = starting_rooms
+        self.nodes: Database = Database()
+        self.edges: Database = Database()
+        self.rooms: Database = Database()
 
     def __str__(self) -> str:
         return f"{type(self).__name__} {self.name} in {self.status}"
@@ -74,18 +72,16 @@ class FloorPlan:
 
     def add_node(self,
                  node: Optional[Union] = None,
-                 vector: Optional[Vector] = None,
-                 points: Optional[Tuple[float, float]] = None) -> bool:
-        check_argument_uniqueness(node, vector, points)
+                 vector: Optional[Vector] = None,) -> bool:
+        check_argument_uniqueness(node, vector)
         if node is not None and isinstance(node, Node):
             for existing_node in self.nodes:
-                if existing_node.name == node.name:
+                if str(node.vector) in self.nodes:
+                    existing_node.name == node.name:
                     return False
 
         elif vector is not None and isinstance(vector, Vector):
             node = Node(vector)
-        elif points is not None and isinstance(points, tuple):
-            node = Node(points)
         else:
             raise ValueError(f"Cannot add node not of type {type(Node)}")
         self.nodes.append(node)
@@ -94,16 +90,13 @@ class FloorPlan:
     def remove_node(self,
                     name: Optional[str] = None,
                     node: Optional[Union] = None,
-                    vector: Optional[Vector] = None,
-                    points: Optional[Tuple[float, float]] = None) -> bool:
-        check_argument_uniqueness(name, node, vector, points)
+                    vector: Optional[Vector] = None,) -> bool:
+        check_argument_uniqueness(name, node, vector)
         if name is not None and isinstance(name, str):
             pass
         if node is not None and isinstance(node, Node):
             self.node.remove(node)
         elif vector is not None and isinstance(vector, Vector):
-            pass
-        elif points is not None and isinstance(points, tuple):
             pass
         else:
             raise ValueError(f"Cannot remove node not of type {type(Node)}")

@@ -148,16 +148,12 @@ class Node:
     '''
     node_counter = 0
 
-    def __init__(self, name: str, vector: Optional(Vector) = None,
-                 points: Optional[Tuple[float, float]] = None) -> None:
-        check_argument_uniqueness(vector, points)
+    def __init__(self, name: str, vector: Vector,) -> None:
         self.name = name
         # The following initializes the empty neighbour array
         self.neighbour_edges: List[Edge] = [None] * 8
-        if vector is not None and isinstance(vector, Vector):
-            pass
-        elif points is not None and isinstance(points, tuple):
-            pass
+        if not isinstance(vector, Vector):
+            raise ValueError("Argument * vector * must be of type Vector")
         self.vector: Vector = vector
         self.node_count: int = Node.node_counter
         Node.node_counter += 1
@@ -230,8 +226,8 @@ class Node:
         if neighbour_edge:
             if transformation:
                 return transformation(
-                    neighbour_edge.get_other_node(self.node_counter))
-            return neighbour_edge.get_other_node(self.node_counter)
+                    neighbour_edge.get_other_node(self))
+            return neighbour_edge.get_other_node(self)
         return
 
 
