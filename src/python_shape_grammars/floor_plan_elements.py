@@ -72,16 +72,28 @@ class Edge:
             type(self).__name__ == type(other).__name__
 
     def get_left_node(self) -> Optional['Node']:
-        return self.line.left_node
+        left_vector = self.line.left_vector
+        return None if left_vector is None else \
+            self.node_a if self.node_a.vector == left_vector else \
+            self.node_b
 
     def get_right_node(self) -> Optional['Node']:
-        return self.line.right_node
+        right_vector = self.line.right_vector
+        return None if right_vector is None else \
+            self.node_a if self.node_a.vector == right_vector else \
+            self.node_b
 
     def get_bottom_node(self) -> Optional['Node']:
-        return self.line.bottom_node
+        bottom_vector = self.line.bottom_vector
+        return None if bottom_vector is None else \
+            self.node_a if self.node_a.vector == bottom_vector else \
+            self.node_b
 
     def get_upper_node(self) -> Optional['Node']:
-        return self.line.upper_node
+        upper_vector = self.line.upper_vector
+        return None if upper_vector is None else \
+            self.node_a if self.node_a.vector == upper_vector else \
+            self.node_b
 
     def get_other_node(self, current_node: 'Node') -> Optional['Node']:
         return self.node_b if self.node_a == current_node else self.node_a

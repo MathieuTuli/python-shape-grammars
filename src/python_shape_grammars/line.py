@@ -12,18 +12,18 @@ class Line:
         self.vector_b: Vector = vector_b
 
         ret = vector_a.left_of(vector_b)
-        self.left_node: Optional[Vector] = None if ret == -1 \
+        self.left_vector: Optional[Vector] = None if ret == -1 \
             else vector_a if ret else vector_b
-        self.right_node: Optional[Vector] = None if ret == -1 \
-            else vector_b if ret else vector_a
-        self.is_horizontal: bool = ret == -1
-
-        ret = vector_a.beneath(vector_b)
-        self.bottom_node: Optional[Vector] = None if ret == -1 \
-            else vector_a if ret else vector_b
-        self.upper_node: Optional[Vector] = None if ret == -1\
+        self.right_vector: Optional[Vector] = None if ret == -1 \
             else vector_b if ret else vector_a
         self.is_vertical: bool = ret == -1
+
+        ret = vector_a.beneath(vector_b)
+        self.bottom_vector: Optional[Vector] = None if ret == -1 \
+            else vector_a if ret else vector_b
+        self.upper_vector: Optional[Vector] = None if ret == -1\
+            else vector_b if ret else vector_a
+        self.is_horizontal: bool = ret == -1
 
         # defining equation
         if vector_a.x == vector_a.x:

@@ -88,5 +88,5 @@ def test_node_and_edge():
     fail_if(edge.get_bottom_node() != node)
     fail_if(edge.get_right_node() is not None)
     fail_if(edge.get_left_node() is not None)
-    fail_if(edge.is_horizontal)
-    fail_if(not edge.is_vertical)
+    fail_if(edge.is_horizontal())
+    fail_if(not edge.is_vertical())
