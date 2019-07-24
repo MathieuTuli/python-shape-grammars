@@ -21,7 +21,6 @@ vector value
 from typing import List, Tuple, Optional
 from .components import EdgeDirection, RoomType, EdgeType
 from .transformations import Transformation
-from .helper import check_argument_uniqueness
 from .vector import Vector
 from .line import Line
 
@@ -33,13 +32,13 @@ class Edge:
 
     def __init__(self,
                  edge_type: EdgeType,
-                 name: str,
                  node_a: 'Node',
                  node_b: 'Node',
                  doors: List['Door'] = None,
                  windows: List['Window'] = None,
                  thickness: int = 1) -> None:
-        self.name = name
+        if not isinstance(edge_type, EdgeType):
+            raise ValueError("edge_type is of incorrect type")
         self.type: str = edge_type.value
         self.node_a: Node = node_a
         self.node_b: Node = node_b
@@ -50,7 +49,7 @@ class Edge:
         Edge.edge_counter += 1
 
     def __str__(self) -> str:
-        return (f"{type(self).__name__} {self.edge_count} - {self.name} -"
+        return (f"{type(self).__name__} {self.edge_count} -"
                 + " {self.type} connected by {self.node_a} and {self.node_b}")
 
     def __len__(self) -> float:
@@ -64,7 +63,6 @@ class Edge:
             self.doors == other.doors and \
             self.windows == other.windows and \
             self.edge_count == other.edge_count and \
-            self.name == other.name and \
             type(self).__name__ == type(other).__name__
 
     def get_left_node(self) -> Optional['Node']:
@@ -148,8 +146,7 @@ class Node:
     '''
     node_counter = 0
 
-    def __init__(self, name: str, vector: Vector,) -> None:
-        self.name = name
+    def __init__(self, vector: Vector,) -> None:
         # The following initializes the empty neighbour array
         self.neighbour_edges: List[Edge] = [None] * 8
         if not isinstance(vector, Vector):
@@ -159,7 +156,7 @@ class Node:
         Node.node_counter += 1
 
     def __str__(self) -> str:
-        return (f"{type(self).__name } {self.node_count} - {self.name}" +
+        return (f"{type(self).__name__ } {self.node_count} -" +
                 " {self.id} @ {self.point}")
 
     def __eq__(self, other: 'Node') -> bool:
@@ -167,7 +164,6 @@ class Node:
             self.neighbour_edges == other.neighbour_edges and \
             self.vector == other.vector and \
             self.node_counter == other.node_count and \
-            self.name == other.name and \
             type(self).__name__ == type(other).__name__
 
     def add_edge(self,
@@ -235,13 +231,12 @@ class RoomNode(Node):
     '''Extends Node, just mostly for typing reasons'''
 
     def __init__(self, vector: Vector,
-                 name: str,
                  room_type: RoomType) -> None:
-        Node.__init__(vector, name)
+        Node.__init__(vector)
         self.room_type = room_type.value
 
     def __str__(self) -> str:
-        return (f"{type(self).__name__} {self.node_count} - {self.name} -"
+        return (f"{type(self).__name__} {self.node_count} -"
                 + " {self.room_type} - {self.id} @ {self.point}")
 
     def __eq__(self, other: 'Node') -> bool:
@@ -250,24 +245,21 @@ class RoomNode(Node):
             self.vector == other.vector and \
             self.node_counter == other.node_count and \
             self.room_type == other.room_type and \
-            self.name == other.name and \
             type(self).__name__ == type(other).__name__
 
 
 class CornerNode(Node):
     '''Extends Node, just mostly for typing reasons'''
 
-    def __init__(self, vector: Vector,
-                 name: str,) -> None:
-        Node.__init__(vector, name)
+    def __init__(self, vector: Vector) -> None:
+        Node.__init__(vector)
 
 
 class WallNode(Node):
     '''Extends Node, just mostly for typing reasons'''
 
-    def __init__(self, vector: Vector,
-                 name: str,) -> None:
-        Node.__init__(vector, name)
+    def __init__(self, vector: Vector) -> None:
+        Node.__init__(vector)
 
 
 class Rectangle:

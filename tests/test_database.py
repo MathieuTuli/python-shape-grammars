@@ -33,10 +33,11 @@ def test_database():
         assert d['what'] == d['ever']
     except AssertionError:
         assert True
-    print("HERE")
     if 'what' not in d:
         pytest.fail()
     if 'ever' not in d:
+        pytest.fail()
+    if 'everr' in d:
         pytest.fail()
 
     d = Database()
@@ -47,6 +48,8 @@ def test_database():
     assert v == d['whatever']
     assert v == d['what']
     assert d['whatever'] == d['what']
+    if d['what'] != v:
+        pytest.fail()
     d.update('whatever', 'test', 'new test')
     a, b = d['whatever'], d['what']
     assert a == b
@@ -68,3 +71,37 @@ def test_database():
 
     except Exception as e:
         raise e
+
+    # test removing items
+    d = Database()
+    d.iterload(['key1', 'key2'], ['test'])
+    if d['key1'] != 'test':
+        pytest.fail()
+    del d['key1']
+    if 'key1' in d:
+        pytest.fail()
+    if 'key2' not in d:
+        pytest.fail()
+    del d['key2']
+    if 'key2' in d:
+        pytest.fail()
+
+    # test iterating over database
+    d = Database()
+    d.iterload(['key1', 'key2'], ['test1'])
+    d.iterload(['key3', 'key4'], ['test2'])
+    d.iterload(['key5', 'key6'], ['test3'])
+    d['key7'] = "test4"
+    for k, v in d.items():
+        if k == 'key1' or k == 'key2':
+            if v != 'test1':
+                pytest.fail()
+        if k == 'key3' or k == 'key4':
+            if v != 'test2':
+                pytest.fail()
+        if k == 'key5' or k == 'key6':
+            if v != 'test3':
+                pytest.fail()
+        if k == 'key7':
+            if v != 'test4':
+                pytest.fail()

@@ -12,9 +12,11 @@ class Room(Rectangle):
     '''
 
     def __init__(self, corners: List[Node],
+                 name: str,
                  label_node: RoomNode,
                  staircase: Staircase = None) -> None:
         Rectangle.__init__(corners)
+        self.name = name
         if label_node.x != (self.NE.x - self.NW.x) and \
                 label_node.y != (self.NE.y - self.SE.y):
             raise ValueError(
@@ -30,6 +32,7 @@ class Room(Rectangle):
             self.NW == other.NW and \
             self.label_node == other.label_node and \
             self.staircase == other.staircase and \
+            self.name == other.name and \
             type(self).__name__ == type(other).__name__
 
     def __str__(self) -> str:
@@ -38,4 +41,5 @@ class Room(Rectangle):
                 + ", ({self.SE.vector.x}, {self.SE.vector.y})"
                 + ", ({self.SW.vector.x}, {self.SW.vector.y})"
                 + ", ({self.NW.vector.x}, {self.NW.vector.y})]"
+                + " | {self.name}"
                 + " labelled: {self.label_node.type}")

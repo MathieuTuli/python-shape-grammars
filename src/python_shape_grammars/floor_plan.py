@@ -2,9 +2,11 @@
 '''
 from typing import List, Optional, Tuple, Union, Dict
 
+from multi_key_dict import multi_key_dict as MKDict
+
 from .floor_plan_elements import Edge, Node
-from .components import FloorPlanStatus
-from .database import Database
+from .components import FloorPlanStatus, EdgeType
+# from .database import Database
 from .helper import check_argument_uniqueness
 from .vector import Vector
 from .room import Room
@@ -16,45 +18,30 @@ class FloorPlan:
                  status: FloorPlanStatus,) -> None:
         self.name = name
         self.status = status.value
-        self.nodes: Database = Database()
-        self.edges: Database = Database()
-        self.rooms: Database = Database()
+        self.nodes: dict = {}
+        self.edges: MKDict = MKDict()
+        self.rooms: dict = {}
 
     def __str__(self) -> str:
         return f"{type(self).__name__} {self.name} in {self.status}"
 
     def add_room(self, room: Room) -> None:
         if not isinstance(room, Room):
-            raise ValueError(f"Cannot add room not of type {type(Room)}")
-        for existing_room in self.rooms:
-            if existing_room.label_node.name == room.label_node.name:
-                raise ValueError("Trying to add a room with duplicate name")
-        self.rooms.append(room)
+            raise ValueError(f"Cannot add room not of type Room")
+        self.rooms[room.name] = room
 
     def remove_room(self, room: Room) -> bool:
         if not isinstance(room, Room):
-            raise ValueError(f"Cannot remove room not of type {type(Room)}")
-        try:
-            self.rooms.remove(room)
-            return True
-        except ValueError:
+            raise ValueError(f"Cannot remove room not of type Room")
+        if room.name not in self.rooms:
             return False
+        del self.rooms[room.name]
 
     def room_exists(self, room: Room) -> bool:
         if not isinstance(room, Room):
             raise ValueError(
-                f"Cannot search for room not of type {type(Room)}")
-        try:
-            self.rooms.index(room)
-            return True
-        except ValueError:
-            return False
-
-    def get_room_by_name(self, name: str) -> Optional[Room]:
-        for room in self.rooms:
-            if room.label_node.name == name:
-                return room
-        return None
+                f"Cannot search for room not of type Room")
+        return room.name in self.rooms
 
     def rooms_exist(self, rooms: List[Room]) -> Tuple[Optional[Room], bool]:
         '''Will optionally return the room it could not find
@@ -65,99 +52,113 @@ class FloorPlan:
         for room in rooms:
             if not isinstance(room, Room):
                 raise ValueError(
-                    f"Cannot search for room not of type {type(Room)}")
+                    f"Cannot search for room not of type Room")
             if not self.room_exists(room):
                 return room, False
         return None, True
 
     def add_node(self,
                  node: Optional[Union] = None,
-                 vector: Optional[Vector] = None,) -> bool:
-        check_argument_uniqueness(node, vector)
-        if node is not None and isinstance(node, Node):
-            for existing_node in self.nodes:
-                if str(node.vector) in self.nodes:
-                    existing_node.name == node.name:
-                    return False
-
-        elif vector is not None and isinstance(vector, Vector):
+                 vector: Optional[Vector] = None) -> bool:
+        identifier = check_argument_uniqueness(node, vector)
+        if isinstance(identifier, Node):
+            if str(node.vector) in self.nodes:
+                return False
+        elif isinstance(identifier, Vector):
             node = Node(vector)
         else:
-            raise ValueError(f"Cannot add node not of type {type(Node)}")
-        self.nodes.append(node)
+            raise ValueError(f"Cannot add node. Incorrect identifiers.")
+        self.nodes[str(node.vector)] = node
         return True
 
     def remove_node(self,
-                    name: Optional[str] = None,
                     node: Optional[Union] = None,
                     vector: Optional[Vector] = None,) -> bool:
-        check_argument_uniqueness(name, node, vector)
-        if name is not None and isinstance(name, str):
+        identifier = check_argument_uniqueness(node, vector)
+        if isinstance(identifier, str):
             pass
-        if node is not None and isinstance(node, Node):
+        if isinstance(identifier, Node):
             self.node.remove(node)
-        elif vector is not None and isinstance(vector, Vector):
+        elif isinstance(identifier, Vector):
             pass
         else:
-            raise ValueError(f"Cannot remove node not of type {type(Node)}")
+            raise ValueError(f"Cannot remove node, incorrect identifier.")
         return True
 
-    def node_exists(self, node: Node) -> bool:
-        if not isinstance(node, Node):
+    def get_node(self,
+                 vector: Vector) -> Optional[Node]:
+        if isinstance(vector, Vector):
+            if str(vector) not in self.nodes:
+                return None
+            else:
+                return self.nodes[str(vector)]
+        else:
             raise ValueError(
-                f"Cannot search for node not of type {type(Node)}")
-        try:
-            self.node.index(node)
-            return True
-        except ValueError:
-            return False
+                f"Cannot search for node without specifying vector.")
 
-    def nodes_exist(self, nodes: List[Node]) -> Tuple[Optional[Node], bool]:
-        '''Will optionally return the room it could not find
+    def get_nodes_by_type(self,
+                          node_type) -> List[Optional[Node]]:
+        raise NotImplementedError
+
+    def node_exists(self,
+                    node: Optional[Union] = None,
+                    vector: Optional[Vector] = None,) -> bool:
+        identifier = check_argument_uniqueness(node, vector)
+        if isinstance(identifier, Vector):
+            if str(vector) in self.nodes:
+                return self.nodes[str(vector)] is not None
+        if isinstance(identifier, Node):
+            for keys, existing_node in self.nodes.items():
+                return node == existing_node
+        else:
+            raise ValueError(f"Cannot remove node, incorrect identifier.")
+
+    def nodes_exist(self,
+                    nodes: List[Union[Node, str, Vector]]) -> \
+            Tuple[Optional[Union[Node, Vector]], bool]:
+        '''Will optionally return the identifier for the node it could not find
             - the first one it can't find
         '''
         if not isinstance(nodes, list):
-            raise ValueError(f"Cannot search rooms: not a list.")
+            raise ValueError(f"Cannot search nodes: not a list.")
         for node in nodes:
-            if not isinstance(node, Node):
-                raise ValueError(
-                    f"Cannot search for node not of type {type(Node)}")
-            if not self.node_exists(node):
-                return node, False
+            if isinstance(node, Node) or isinstance(node, Vector):
+                ret = self.node_exists(node)
+                if not ret:
+                    return node, False
         return None, True
 
-    def get_node_by_name(self, name: str) -> Optional[Node]:
-        for node in self.nodes:
-            if node.name == name:
-                return node
-        return None
-
-    def add_edge(self, edge: Edge) -> None:
+    def add_premade_edge(self, edge: Edge) -> None:
         if not isinstance(edge, Edge):
             raise ValueError(f"Cannot add edge not of type {type(Edge)}")
-        for existing_edge in self.edges:
-            if existing_edge.name == edge.name:
-                raise ValueError("Trying to add a edge with duplicate name")
-        self.edges.append(edge)
+        self.edges[str(edge.node_a.vector), str(edge.node_b.vector),
+                   str(edge)] = edge
+
+    def add_new_edge(self, edge_type: EdgeType,
+                     node_a: Node, node_b: Node,
+                     doors: List['Door'] = None,
+                     windows: List['Window'] = None,
+                     thickness: int = 1) -> None:
+        '''This is bad design, so is adding a new node. This graph should be
+        independent of how nodes/edges are made, so to speak
+        '''
+        edge = Edge(EdgeType, node_a, node_b, doors, windows, thickness)
+        self.edges[(str(edge.node_a.vector), str(edge.node_b.vector)),
+                   str(edge)] = edge
 
     def remove_edge(self, edge: Edge) -> bool:
         if not isinstance(edge, Edge):
-            raise ValueError(f"Cannot remove edge not of type {type(Edge)}")
-        try:
-            self.edges.remove(edge)
+            raise ValueError("Cannot remove edge not of type Edge")
+        if str(edge) in self.edges:
+            del self.edges[str(edge)]
             return True
-        except ValueError:
-            return False
+        return False
 
     def edge_exists(self, edge: Edge) -> bool:
         if not isinstance(edge, Edge):
             raise ValueError(
-                f"Cannot search for edge not of type {type(Edge)}")
-        try:
-            self.edges.index(edge)
-            return True
-        except ValueError:
-            return False
+                "Cannot search for edge not of type Edge")
+        return str(edge) in self.edges
 
     def edges_exist(self, edges: List[Edge]) -> Tuple[Optional[Edge], bool]:
         '''Will optionally return the room it could not find
@@ -168,13 +169,7 @@ class FloorPlan:
         for edge in edges:
             if not isinstance(edge, Edge):
                 raise ValueError(
-                    f"Cannot search for edge not of type {type(Edge)}")
+                    "Cannot search for edge not of type Edge")
             if not self.edge_exists(edge):
                 return edge, False
         return None, True
-
-    def get_edge_by_name(self, name: str) -> Optional[Edge]:
-        for edge in self.edges:
-            if edge.name == name:
-                return edge
-        return None

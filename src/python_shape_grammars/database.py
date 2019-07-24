@@ -1,18 +1,25 @@
 __author__ = 'root-11'
-from typing import Any
-
-from .helper import check_argument_uniqueness
 
 
 class Database(object):
-    """ A dictionary that allows multiple keys for one value """
+    """ author: root-11
+    A dictionary that allows multiple keys for one value
+    """
 
     def __init__(self):
+        '''author: root-11
+        '''
         self.keys = {}
         self.values = {}
 
+    def __contains__(self, item):
+        '''author: Mathieu Tuli
+        '''
+        return item in self.keys
+
     def __getitem__(self, item):  # <---SQL SELECT statement
-        print(item)
+        '''author: root-11
+        '''
         values = self.keys[item]
         if len(values) > 1:
             return sorted(list(values))
@@ -20,6 +27,8 @@ class Database(object):
             return list(values)[0]
 
     def __setitem__(self, key, value):
+        '''author: root-11
+        '''
         if key not in self.keys:  # it's a new key <---SQL INSERT statement
             if value not in self.values:  # it's a new value
                 self.keys[key] = set()  # a new set
@@ -39,7 +48,8 @@ class Database(object):
                 self.values[value].add(key)
 
     def update(self, key, old_value, new_value):
-        """update is a special case because __setitem__ can't see that
+        """author: root-11
+        update is a special case because __setitem__ can't see that
         you want to propagate your update onto multiple values. """
         if old_value in self.keys[key]:
             affected_keys = self.values[old_value]
@@ -52,6 +62,8 @@ class Database(object):
                 "key: {} does not have value: {}".format(key, old_value))
 
     def __delitem__(self, key, value=None):  # <---SQL DELETE statement
+        '''author: root-11
+        '''
         if value is None:
             # All the keys relations are to be deleted.
             try:
@@ -78,6 +90,8 @@ class Database(object):
                 raise KeyError("key not found")
 
     def iterload(self, key_list, value_list):
+        '''author: root-11
+        '''
         for key in key_list:
             for value in value_list:
                 self.__setitem__(key, value)
