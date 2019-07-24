@@ -12,22 +12,27 @@ class Line:
         self.vector_b: Vector = vector_b
 
         ret = vector_a.left_of(vector_b)
-        self.left_node: Optional[Vector] = None if ret == - \
-            1 else vector_a if ret else vector_b
-        self.right_node: Optional[Vector] = None if ret == - \
-            1 else vector_b if ret else vector_a
+        self.left_node: Optional[Vector] = None if ret == -1 \
+            else vector_a if ret else vector_b
+        self.right_node: Optional[Vector] = None if ret == -1 \
+            else vector_b if ret else vector_a
         self.is_horizontal: bool = ret == -1
 
         ret = vector_a.beneath(vector_b)
-        self.bottom_node: Optional[Vector] = None if ret == - \
-            1 else vector_a if ret else vector_b
-        self.upper_node: Optional[Vector] = None if ret == - \
-            1 else vector_b if ret else vector_a
+        self.bottom_node: Optional[Vector] = None if ret == -1 \
+            else vector_a if ret else vector_b
+        self.upper_node: Optional[Vector] = None if ret == -1\
+            else vector_b if ret else vector_a
         self.is_vertical: bool = ret == -1
 
         # defining equation
-        self.m: float = (vector_b.y - vector_a.y) / (vector_b.x - vector_a.x)
-        self.b: float = vector_a.y - (self.m * vector_a.x)
+        if vector_a.x == vector_a.x:
+            self.m = float('Inf')
+            self.b: float('NaN')
+        else:
+            self.m: float = (vector_b.y - vector_a.y) / \
+                (vector_b.x - vector_a.x)
+            self.b: float = vector_a.y - (self.m * vector_a.x)
 
         self.midpoint: Vector = vector_a.linear_combination(
             vector_b, value=0.5)
