@@ -26,9 +26,9 @@ class Line:
         self.is_horizontal: bool = ret == -1
 
         # defining equation
-        if vector_a.x == vector_a.x:
-            self.m = float('Inf')
-            self.b: float('NaN')
+        if vector_a.x == vector_b.x:
+            self.m: float = float('Inf')
+            self.b: float = float('Inf')
         else:
             self.m: float = (vector_b.y - vector_a.y) / \
                 (vector_b.x - vector_a.x)
@@ -54,9 +54,13 @@ class Line:
         '''
         if not isinstance(vector, Vector):
             raise ValueError(f"Passed in vector is not of type {type(Vector)}")
-        return \
-            vector.y <= (((self.m * vector.x) + self.b) + threshold) and \
-            vector.y >= (((self.m * vector.x) + self.b) - threshold)
+        if self.m != float('Inf') and self.b != float('Inf'):
+            return \
+                vector.y <= (self.m * vector.x + self.b) + threshold and \
+                vector.y >= (self.m * vector.x + self.b) - threshold
+        else:
+            return vector.y <= self.upper_vector.y + threshold and \
+                vector.y >= self.upper_vector.y - threshold
 
     def is_on_midpoint(self, vector: Vector, threshold: float) -> bool:
         '''Threshold is used because the points we used are floats, so we might
@@ -66,4 +70,6 @@ class Line:
             raise ValueError(f"Passed in vector is not of type {type(Vector)}")
         return \
             (vector.x <= self.midpoint.x + threshold) and \
-            (vector.x >= self.midpoint.x - threshold)
+            (vector.x >= self.midpoint.x - threshold) and \
+            (vector.y <= self.midpoint.y + threshold) and \
+            (vector.y >= self.midpoint.y - threshold)
