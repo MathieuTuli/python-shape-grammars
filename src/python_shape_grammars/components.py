@@ -36,6 +36,32 @@ class EdgeDirection:
                 " choose from one of" +
                 " ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']")
 
+    def __str__(self) -> str:
+        return f"{type(self).__name__} | {self.value} or {self.integer_value}"
+
+    def __eq__(self, other: 'EdgeDirection') -> bool:
+        return False if not isinstance(other, EdgeDirection) else \
+            self.value == other.value and \
+            self.integer_value == other.integer_value
+
+    def reverse(self):
+        if self.value == 'N':
+            return EdgeDirection('S')
+        if self.value == 'NE':
+            return EdgeDirection('SW')
+        if self.value == 'E':
+            return EdgeDirection('W')
+        if self.value == 'SE':
+            return EdgeDirection('NW')
+        if self.value == 'S':
+            return EdgeDirection('N')
+        if self.value == 'SW':
+            return EdgeDirection('NE')
+        if self.value == 'W':
+            return EdgeDirection('E')
+        if self.value == 'NW':
+            return EdgeDirection('SE')
+
 
 class EdgeType(TypedTuple):
     value = str
