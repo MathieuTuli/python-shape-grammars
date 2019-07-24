@@ -90,3 +90,9 @@ def test_node_and_edge():
     fail_if(edge.get_left_node() is not None)
     fail_if(edge.is_horizontal())
     fail_if(not edge.is_vertical())
+
+    fail_if(node.get_neighbour_edge(EdgeDirection('N')) != edge)
+    fail_if(node.get_neighbour_node(EdgeDirection('N')) != node2)
+
+def test_rectangle():
+    pass

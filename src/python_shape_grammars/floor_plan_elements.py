@@ -273,10 +273,9 @@ class Node:
             raise ValueError(
                 "Passed in transformation is not of type Transformation")
         neighbour_edge = self.neighbour_edges[direction.integer_value]
-        if neighbour_edge:
-            if transformation:
-                return transformation(neighbour_edge)
-        return neighbour_edge
+        return None if neighbour_edge is None else \
+            transformation(neighbour_edge) if transformation is not None else \
+            neighbour_edge
 
     def get_neighbour_node(
             self,
@@ -286,16 +285,15 @@ class Node:
         if not isinstance(direction, EdgeDirection):
             raise ValueError(
                 f"Passed in direction is not of type EdgeDirection")
-        if not isinstance(transformation, Transformation):
+        if transformation is not None and \
+                not isinstance(transformation, Transformation):
             raise ValueError(
                 "Passed in transformation is not of type Transformation")
         neighbour_edge = self.neighbour_edges[direction.integer_value]
-        if neighbour_edge:
-            if transformation:
-                return transformation(
-                    neighbour_edge.get_other_node(self))
-            return neighbour_edge.get_other_node(self)
-        return
+        return None if neighbour_edge is None else \
+            transformation(neighbour_edge.get_other_node(self)) if \
+            transformation is not None else \
+            neighbour_edge.get_other_node(self)
 
 
 class RoomNode(Node):
