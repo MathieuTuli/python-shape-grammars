@@ -19,6 +19,9 @@ are grid based, and hence th NE and SE corners will have the exact same x
 vector value
 '''
 from typing import List, Tuple, Optional
+
+from multi_key_dict import multi_key_dict as MKDict
+
 from .components import EdgeDirection, RoomType, EdgeType
 from .transformations import Transformation
 from .vector import Vector
@@ -37,9 +40,12 @@ class Edge:
                  doors: List['Door'] = None,
                  windows: List['Window'] = None,
                  thickness: int = 1) -> None:
-        if not isinstance(edge_type, EdgeType):
-            raise ValueError("edge_type is of incorrect type")
+        # something weird with inheritance so check like this
+        if not type(edge_type).__name__ == 'EdgeType':
+            raise ValueError(f"edge_type {edge_type} is of incorrect type."
+                             + " Need EdgeType")
         self.type: str = edge_type.value
+        self.direction = node_a.get_direction_to(node_b)
         self.node_a: Node = node_a
         self.node_b: Node = node_b
         self.line: Line = Line(node_a.vector, node_b.vector, thickness)
@@ -109,7 +115,7 @@ class Edge:
         '''
         if not isinstance(rectangle, Rectangle):
             raise ValueError(
-                f"Rectangle passed in not of type {type(Rectangle)}")
+                f"Rectangle passed in not of type Rectangle")
         return self.line.intersects(rectangle)
 
 
@@ -148,7 +154,15 @@ class Node:
 
     def __init__(self, vector: Vector,) -> None:
         # The following initializes the empty neighbour array
-        self.neighbour_edges: List[Edge] = [None] * 8
+        self.neighbour_edges: MKDict = MKDict()
+        self.neighbour_edges[0, 'N'] = None
+        self.neighbour_edges[1, 'NE'] = None
+        self.neighbour_edges[2, 'E'] = None
+        self.neighbour_edges[3, 'SE'] = None
+        self.neighbour_edges[4, 'S'] = None
+        self.neighbour_edges[5, 'SW'] = None
+        self.neighbour_edges[6, 'W'] = None
+        self.neighbour_edges[7, 'NW'] = None
         if not isinstance(vector, Vector):
             raise ValueError("Argument * vector * must be of type Vector")
         self.vector: Vector = vector
@@ -156,32 +170,78 @@ class Node:
         Node.node_counter += 1
 
     def __str__(self) -> str:
-        return (f"{type(self).__name__ } {self.node_count} -" +
-                " {self.id} @ {self.point}")
+        return (f"{type(self).__name__} {self.node_count} -" +
+                " @ {self.vector}")
 
     def __eq__(self, other: 'Node') -> bool:
         return False if not isinstance(other, Node) else \
             self.neighbour_edges == other.neighbour_edges and \
             self.vector == other.vector and \
-            self.node_counter == other.node_count and \
+            self.node_count == other.node_count and \
             type(self).__name__ == type(other).__name__
 
+    def get_direction_to(self, other: 'Node') -> EdgeDirection:
+        '''
+            N | NE | E | SE | S | SW | W | NW
+            --|----|---|----|---|--------|---
+            0 | 1  | 2 | 3  | 4 | 5  | 6 | 7
+        '''
+        if self.left_of(other) == -1 and self.beneath(other) == 1:
+            return EdgeDirection('N')
+
+        if self.left_of(other) == 1 and self.beneath(other) == 1:
+            return EdgeDirection('NE')
+
+        if self.left_of(other) == 1 and self.beneath(other) == -1:
+            return EdgeDirection('E')
+
+        if self.left_of(other) == 1 and self.above(other) == 1:
+            return EdgeDirection('SE')
+
+        if self.left_of(other) == -1 and self.above(other) == 1:
+            return EdgeDirection('S')
+
+        if self.right_of(other) == 1 and self.above(other) == 1:
+            return EdgeDirection('SW')
+
+        if self.right_of(other) == -1 and self.above(other) == -1:
+            return EdgeDirection('W')
+
+        if self.right_of(other) == 1 and self.beneath(other) == 1:
+            return EdgeDirection('NW')
+
+    def left_of(self, other: 'Node') -> bool:
+        return self.vector.left_of(other.vector)
+
+    def right_of(self, other: 'Node') -> bool:
+        return self.vector.right_of(other.vector)
+
+    def above(self, other: 'Node') -> bool:
+        return self.vector.above(other.vector)
+
+    def beneath(self, other: 'Node') -> bool:
+        return self.vector.beneath(other.vector)
+
     def add_edge(self,
-                 direction: EdgeDirection,
                  edge: Edge,
                  transformation: Optional[Transformation] = None) -> None:
-        if len(self.neighbour_edges) == 8:
-            raise ValueError("Already have 8 edges")
+        if self == edge.node_a:
+            direction = edge.direction
+        else:
+            direction = edge.direction.reverse()
         if not isinstance(direction, EdgeDirection):
             raise ValueError(
-                f"Passed in direction is not of type {type(EdgeDirection)}")
+                f"Passed in direction is not of type EdgeDirection")
+        if self.neighbour_edges[direction.value] is not None:
+            raise ValueError(f"There already exists an edge at {direction}")
         if not isinstance(edge, Edge):
             raise ValueError(
-                f"Passed in edge is not of type {type(Edge)}")
-        if not isinstance(transformation, Transformation):
+                f"Passed in edge is not of type Edge")
+        if transformation is not None and not isinstance(transformation,
+                                                         Transformation):
             raise ValueError(
-                "Passed in transformation is not of type " +
-                f"{type(Transformation)}")
+                "Passed in transformation is not of " +
+                f"type Transformation")
         if transformation:
             self.neighbour_edges[direction.integer_value] = transformation(
                 edge)
@@ -195,11 +255,11 @@ class Node:
             Optional['Edge']:
         if not isinstance(direction, EdgeDirection):
             raise ValueError(
-                f"Passed in direction is not of type {type(EdgeDirection)}")
-        if not isinstance(transformation, Transformation):
+                f"Passed in direction is not of type EdgeDirection")
+        if transformation is not None and not isinstance(transformation,
+                                                         Transformation):
             raise ValueError(
-                "Passed in transformation is not of type " +
-                f"{type(Transformation)}")
+                "Passed in transformation is not of type Transformation")
         neighbour_edge = self.neighbour_edges[direction.integer_value]
         if neighbour_edge:
             if transformation:
@@ -213,11 +273,10 @@ class Node:
             Optional['Node']:
         if not isinstance(direction, EdgeDirection):
             raise ValueError(
-                f"Passed in direction is not of type {type(EdgeDirection)}")
+                f"Passed in direction is not of type EdgeDirection")
         if not isinstance(transformation, Transformation):
             raise ValueError(
-                "Passed in transformation is not of type " +
-                f"{type(Transformation)}")
+                "Passed in transformation is not of type Transformation")
         neighbour_edge = self.neighbour_edges[direction.integer_value]
         if neighbour_edge:
             if transformation:
@@ -303,7 +362,7 @@ class Rectangle:
         for node in nodes:
             if not isinstance(node, Node):
                 raise ValueError(
-                    f"One of the corners is not of type {type(Node)}")
+                    f"One of the corners is not of type Node")
         a, b, c, d = nodes
         min_x = min(a.x, b.x, c.x, d.x)
         max_x = max(a.x, b.x, c.x, d.x)
