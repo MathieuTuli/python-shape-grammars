@@ -41,10 +41,10 @@ class Edge:
                  windows: List['Window'] = None,
                  thickness: int = 1) -> None:
         # something weird with inheritance so check like this
-        if not type(edge_type).__name__ == 'EdgeType':
+        if not isinstance(edge_type, EdgeType):
             raise ValueError(f"edge_type {edge_type} is of incorrect type."
                              + " Need EdgeType")
-        self.type: str = edge_type.value
+        self.type: str = edge_type
         self.direction = node_a.get_direction_to(node_b)
         self.node_a: Node = node_a
         self.node_b: Node = node_b
@@ -297,7 +297,7 @@ class RoomNode(Node):
     def __init__(self, vector: Vector,
                  room_type: RoomType) -> None:
         Node.__init__(self, vector)
-        self.room_type = room_type.value
+        self.room_type = room_type
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} {self.node_count} -"
@@ -367,7 +367,7 @@ class Rectangle:
 
     def sort_nodes(self, nodes: List[Node]) -> Tuple[Node]:
         for node in nodes:
-            if not isinstance(node, Node):
+            if not isinstance(node, Node) and not isinstance(node, CornerNode):
                 raise ValueError(
                     f"One of the corners is not of type Node")
         a, b, c, d = nodes

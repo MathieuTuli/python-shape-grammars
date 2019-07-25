@@ -11,12 +11,13 @@ def fail_if(boolean):
 
 
 def test_room():
+    Room.room_counter = 0
     bl = Node(Vector(0, 0))
     tl = Node(Vector(0, 1))
     br = Node(Vector(1, 0))
     tr = Node(Vector(1, 1))
-    room_node = RoomNode(Vector(0.5, 0.5), RoomType('kitchen'))
-    room = Room(corners=[tl, bl, tr, br], room_node=room_node)
+    room_node = RoomNode(Vector(0.5, 0.5), RoomType.kitchen)
+    room = Room(name='name', corners=[tl, bl, tr, br], room_node=room_node)
 
     fail_if(room != room)
     fail_if(room.room_count != 0)
@@ -27,11 +28,17 @@ def test_room():
             + f", (1.0, 0.0)"
             + f", (0.0, 0.0)"
             + f", (0.0, 1.0)]"
-            + f" labelled: {RoomType('kitchen').value}"
+            + f" labelled: {RoomType.kitchen}"
+            + f" name: name"
             + f" | count: 0")
 
     try:
-        Room(corners=[tl, bl, tr, br], room_node=tl)
+        Room(name='test', corners=[tl, bl, tr, br], room_node=tl)
+        pytest.fail()
+    except ValueError:
+        pass
+    try:
+        Room(name=0, corners=[tl, bl, tr, br], room_node=room_node)
         pytest.fail()
     except ValueError:
         pass

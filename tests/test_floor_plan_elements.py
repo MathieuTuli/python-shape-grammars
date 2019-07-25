@@ -14,12 +14,14 @@ def fail_if(boolean):
 
 
 def test_node_and_edge():
+    Node.node_counter = 0
     vector = Vector(0, 0)
     node = Node(vector)
 
     fail_if(len(node.neighbour_edges) != 8)
     # fail_if(sum([arg is not None for arg in node.neighbour_edges]) != 0)
     fail_if(node.vector != vector)
+    print(node.node_count)
     fail_if(node.node_count != 0)
     fail_if(Node.node_counter != 1)
     fail_if(str(node) != f"Node 0 - @ {str(vector)}")
@@ -66,7 +68,7 @@ def test_node_and_edge():
     fail_if(to != direction)
     fail_if(direction.reverse() != EdgeDirection('S'))
     fail_if(node2.get_direction_to(node) != direction.reverse())
-    et = EdgeType('wall')
+    et = EdgeType.wall
     edge = Edge(edge_type=et, node_a=node, node_b=node2)
     node.add_edge(edge)
     node2.add_edge(edge)
@@ -125,11 +127,12 @@ def test_node_and_edge():
 
 
 def test_room_node():
-    rn = RoomNode(vector=Vector(0, 0), room_type=RoomType('kitchen'))
+    rn = RoomNode(vector=Vector(0, 0), room_type=RoomType.kitchen)
+    print(str(rn))
     fail_if(
-        str(rn) != f"RoomNode {Node.node_counter - 1} - kitchen - " +
+        str(rn) != f"RoomNode {Node.node_counter - 1} - RoomType.kitchen - " +
         f"{Vector(0,0)}")
-    rn2 = RoomNode(vector=Vector(0, 0), room_type=RoomType('kitchen'))
+    rn2 = RoomNode(vector=Vector(0, 0), room_type=RoomType.kitchen)
     fail_if(rn != rn)
     fail_if(rn == rn2)
 

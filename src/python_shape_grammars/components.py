@@ -1,5 +1,6 @@
 # from collections import dataclass
 
+import enum
 from .typed_tuple import TypedTuple
 from .vector import Vector
 
@@ -63,48 +64,11 @@ class EdgeDirection:
             return EdgeDirection('SE')
 
 
-class EdgeType(TypedTuple):
-    value = str
+EdgeType = enum.Enum(
+    'RoomType', ['wall', 'empty', 'label'])
 
-    def _parse_value(value):
-        values = ['wall', 'empty', 'label']
-        if value not in values:
-            raise ValueError(f"Edge Type must be one of {values}")
-        return value
+RoomType = enum.Enum(
+    'RoomType', ['kitchen', 'hallway', 'dining', 'living'])
 
-    def __eq__(self, other) -> bool:
-        return self.value == other.value and \
-            type(self).__name__ == type(other).__name__
-
-
-class RoomType(TypedTuple):
-    '''Defining Room Types
-    '''
-    value = str
-
-    def _parse_value(value):
-        room_types = ['kitchen', 'hallway', 'dining room', 'living room']
-        if value not in room_types:
-            raise ValueError(f"Argument room_type must be one of {room_types}")
-        return value
-
-    def __eq__(self, other) -> bool:
-        return self.value == other.value and \
-            type(self).__name__ == type(other).__name__
-
-
-class FloorPlanStatus(TypedTuple):
-    '''Defining Room Types
-    '''
-    value = str
-
-    def _parse_value(value):
-        status_types = ['start', 'generating', 'done']
-        if value not in status_types:
-            raise ValueError(
-                f"Argument room_type must be one of {status_types}")
-        return value
-
-    def __eq__(self, other) -> bool:
-        return self.value == other.value and \
-            type(self).__name__ == type(other).__name__
+FloorPlanStatus = enum.Enum(
+    'RoomType', ['start', 'generating', 'done'])
