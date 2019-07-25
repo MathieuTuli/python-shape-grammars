@@ -30,29 +30,33 @@ class FloorPlan:
             raise ValueError(f"Cannot add room not of type Room")
         self.rooms[room.name] = room
 
-    def remove_room(self, room: Room) -> bool:
-        if not isinstance(room, Room):
-            raise ValueError(f"Cannot remove room not of type Room")
-        if room.name not in self.rooms:
+    def remove_room(self, room: Room = None, room_name: str = None) -> bool:
+        identifier = check_argument_uniqueness(room, room_name)
+        if isinstance(identifier, Room):
+            identifier = room.name
+        if identifier not in self.rooms:
             return False
-        del self.rooms[room.name]
+        del self.rooms[identifier]
+        return True
 
-    def room_exists(self, room: Room) -> bool:
-        if not isinstance(room, Room):
-            raise ValueError(
-                f"Cannot search for room not of type Room")
-        return room.name in self.rooms
+    def room_exists(self, room: Room = None, room_name: str = None) -> bool:
+        identifier = check_argument_uniqueness(room, room_name)
+        if isinstance(identifier, Room):
+            identifier = room.name
+        return identifier in self.rooms
 
-    def rooms_exist(self, rooms: List[Room]) -> Tuple[Optional[Room], bool]:
+    def rooms_exist(self,
+                    rooms: List[Union[str, Room]]) -> Tuple[Optional[Room],
+                                                            bool]:
         '''Will optionally return the room it could not find
             - the first one it can't find
         '''
         if not isinstance(rooms, list):
             raise ValueError(f"Cannot search rooms: not a list.")
         for room in rooms:
-            if not isinstance(room, Room):
+            if not isinstance(room, Room) and not isinstance(room, str):
                 raise ValueError(
-                    f"Cannot search for room not of type Room")
+                    f"Cannot search for room not of type Room or str")
             if not self.room_exists(room):
                 return room, False
         return None, True

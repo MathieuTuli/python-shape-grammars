@@ -36,3 +36,31 @@ def test_floor_plan():
         pass
     fp.add_room(room)
     fail_if(fp.rooms != {room.name: room})
+
+    fail_if(not fp.remove_room('name'))
+    fp.add_room(room)
+    fail_if(not fp.remove_room(room))
+
+    fp.add_room(room)
+    fail_if(fp.rooms['name'] != room)
+    fail_if(not fp.room_exists(room))
+    fail_if(not fp.room_exists('name'))
+
+    room_, ret = fp.rooms_exist(['name', room])
+    fail_if(not ret)
+    fail_if(fp.remove_room('test'))
+    room_, ret = fp.rooms_exist(['ame', room])
+    fail_if(ret)
+    fail_if(room_ != 'ame')
+    try:
+        fp.rooms_exist('name')
+        pytest.fail()
+    except ValueError:
+        pass
+    try:
+        fp.rooms_exist([0])
+        pytest.fail()
+    except ValueError:
+        pass
+
+    node = Node(Vector(0, 0))
