@@ -1,8 +1,6 @@
 # from collections import dataclass
 
 import enum
-from .typed_tuple import TypedTuple
-from .vector import Vector
 
 
 class EdgeDirection:
