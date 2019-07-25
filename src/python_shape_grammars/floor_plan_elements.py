@@ -342,11 +342,11 @@ class Rectangle:
         NE, SE, SW, NW = self.sort_nodes(corners)
         self.NE: Node = NE
         self.SE: Node = SE
-        self.NW: Node = SW
-        self.SW: Node = NW
+        self.SW: Node = SW
+        self.NW: Node = NW
         self.corners: List[Node] = [self.NE, self.SE, self.NW, self.SW]
-        self.width: float = NE.x - NW.x
-        self.height: float = NE.y - SE.y
+        self.width: float = NE.vector.x - NW.vector.x
+        self.height: float = NE.vector.y - SE.vector.y
 
         # TODO need to define allowable labels
         self.is_horizontal: bool = self.width > self.height
@@ -355,10 +355,10 @@ class Rectangle:
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} defined by"
-                + " [({self.NE.vector.x}, {self.NE.vector.y})"
-                + ", ({self.SE.vector.x}, {self.SE.vector.y})"
-                + ", ({self.SW.vector.x}, {self.SW.vector.y})"
-                + ", ({self.NW.vector.x}, {self.NW.vector.y})]")
+                + f" [NE: ({self.NE.vector.x}, {self.NE.vector.y})"
+                + f", SE: ({self.SE.vector.x}, {self.SE.vector.y})"
+                + f", SW: ({self.SW.vector.x}, {self.SW.vector.y})"
+                + f", NW: ({self.NW.vector.x}, {self.NW.vector.y})]")
 
     def __eq__(self, other: 'Rectangle') -> bool:
         return False if not isinstance(other, Rectangle) else \
@@ -374,28 +374,39 @@ class Rectangle:
                 raise ValueError(
                     f"One of the corners is not of type Node")
         a, b, c, d = nodes
-        min_x = min(a.x, b.x, c.x, d.x)
-        max_x = max(a.x, b.x, c.x, d.x)
-        min_y = min(a.y, b.y, c.y, d.y)
-        max_y = max(a.y, b.y, c.y, d.y)
-        NE = [node for node in nodes if node.x == max_x and node.y == max_y][0]
-        SE = [node for node in nodes if node.x == max_x and node.y == min_y][0]
-        SW = [node for node in nodes if node.x == min_x and node.y == max_y][0]
-        NW = [node for node in nodes if node.x == min_x and node.y == max_y][0]
-        if NE.x != SE.x or NW.x != SW.x or NE.y != NW.y or SE.y != SW.y:
+        min_x = min(a.vector.x, b.vector.x, c.vector.x, d.vector.x)
+        max_x = max(a.vector.x, b.vector.x, c.vector.x, d.vector.x)
+        min_y = min(a.vector.y, b.vector.y, c.vector.y, d.vector.y)
+        max_y = max(a.vector.y, b.vector.y, c.vector.y, d.vector.y)
+        print(min_x)
+        print(max_x)
+        print(min_y)
+        print(max_y)
+        NE = [node for node in nodes if node.vector.x ==
+              max_x and node.vector.y == max_y][0]
+        SE = [node for node in nodes if node.vector.x ==
+              max_x and node.vector.y == min_y][0]
+        SW = [node for node in nodes if node.vector.x ==
+              min_x and node.vector.y == min_y][0]
+        NW = [node for node in nodes if node.vector.x ==
+              min_x and node.vector.y == max_y][0]
+        if NE.vector.x != SE.vector.x or NW.vector.x != SW.vector.x or \
+                NE.vector.y != NW.vector.y or SE.vector.y != SW.vector.y:
             raise ValueError(
                 "The rectangular corners did not match up" +
-                f"\nNE: ({NE.x}, {NE.y})" +
-                f"\nSE: ({SE.x}, {SE.y})" +
-                f"\nSW: ({SW.x}, {SW.y})" +
-                f"\nNW: ({NW.x}, {NW.y})")
+                f"\nNE: ({NE.vector.x}, {NE.vector.y})" +
+                f"\nSE: ({SE.vector.x}, {SE.vector.y})" +
+                f"\nSW: ({SW.vector.x}, {SW.vector.y})" +
+                f"\nNW: ({NW.vector.x}, {NW.vector.y})")
         return (NE, SE, SW, NW)
 
     def overlap_with(self, other: 'Rectangle') -> bool:
         '''Checks if this rectangle overlaps with another
         '''
-        if self.NW.x > other.SE.x or other.NW.x > self.SE.x or \
-                self.NW.y < other.SE.y or other.NW.y < self.SE.y:
+        if self.NW.vector.x > other.SE.vector.x or \
+                other.NW.vector.x > self.SE.vector.x or \
+                self.NW.vector.y < other.SE.vector.y or \
+                other.NW.vector.y < self.SE.vector.y:
             return False
         return True
 

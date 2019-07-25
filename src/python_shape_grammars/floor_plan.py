@@ -17,7 +17,7 @@ class FloorPlan:
                  name: str,
                  status: FloorPlanStatus,) -> None:
         self.name = name
-        self.status = status.value
+        self.status = status
         self.nodes: dict = {}
         self.edges: MKDict = MKDict()
         self.rooms: dict = {}
@@ -58,7 +58,7 @@ class FloorPlan:
         return None, True
 
     def add_node(self,
-                 node: Optional[Union] = None,
+                 node: Optional[Node] = None,
                  vector: Optional[Vector] = None) -> bool:
         identifier = check_argument_uniqueness(node, vector)
         if isinstance(identifier, Node):
@@ -72,7 +72,7 @@ class FloorPlan:
         return True
 
     def remove_node(self,
-                    node: Optional[Union] = None,
+                    node: Optional[Node] = None,
                     vector: Optional[Vector] = None,) -> bool:
         identifier = check_argument_uniqueness(node, vector)
         if isinstance(identifier, str):
@@ -101,7 +101,7 @@ class FloorPlan:
         raise NotImplementedError
 
     def node_exists(self,
-                    node: Optional[Union] = None,
+                    node: Optional[Node] = None,
                     vector: Optional[Vector] = None,) -> bool:
         identifier = check_argument_uniqueness(node, vector)
         if isinstance(identifier, Vector):
