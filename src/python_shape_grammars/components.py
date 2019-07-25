@@ -73,7 +73,8 @@ class EdgeType(TypedTuple):
         return value
 
     def __eq__(self, other) -> bool:
-        return self.value == other.value
+        return self.value == other.value and \
+            type(self).__name__ == type(other).__name__
 
 
 class RoomType(TypedTuple):
@@ -88,7 +89,8 @@ class RoomType(TypedTuple):
         return value
 
     def __eq__(self, other) -> bool:
-        return self.value == other.value
+        return self.value == other.value and \
+            type(self).__name__ == type(other).__name__
 
 
 class FloorPlanStatus(TypedTuple):
@@ -104,4 +106,5 @@ class FloorPlanStatus(TypedTuple):
         return value
 
     def __eq__(self, other) -> bool:
-        return self.value == other.value
+        return self.value == other.value and \
+            type(self).__name__ == type(other).__name__

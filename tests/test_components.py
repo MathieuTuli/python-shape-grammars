@@ -44,6 +44,14 @@ def test_edge_direction():
     fail_if(W.reverse() != EdgeDirection('E'))
     fail_if(NW.reverse() != EdgeDirection('SE'))
 
+    try:
+        EdgeDirection('s')
+        pytest.fail()
+    except ValueError:
+        pass
+
+    fail_if(str(N) != "EdgeDirection | N or 0")
+
 
 def test_edge_type():
     edge_type = EdgeType('wall')
