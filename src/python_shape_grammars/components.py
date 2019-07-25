@@ -67,10 +67,13 @@ class EdgeType(TypedTuple):
     value = str
 
     def _parse_value(value):
-        values = ['wall', 'empty', 'label edge']
+        values = ['wall', 'empty', 'label']
         if value not in values:
             raise ValueError(f"Edge Type must be one of {values}")
         return value
+
+    def __eq__(self, other) -> bool:
+        return self.value == other.value
 
 
 class RoomType(TypedTuple):
@@ -84,6 +87,9 @@ class RoomType(TypedTuple):
             raise ValueError(f"Argument room_type must be one of {room_types}")
         return value
 
+    def __eq__(self, other) -> bool:
+        return self.value == other.value
+
 
 class FloorPlanStatus(TypedTuple):
     '''Defining Room Types
@@ -96,3 +102,6 @@ class FloorPlanStatus(TypedTuple):
             raise ValueError(
                 f"Argument room_type must be one of {status_types}")
         return value
+
+    def __eq__(self, other) -> bool:
+        return self.value == other.value

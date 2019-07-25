@@ -1,6 +1,6 @@
 import pytest
 
-from python_shape_grammars.components import EdgeDirection
+from python_shape_grammars.components import EdgeDirection, EdgeType, RoomType, FloorPlanStatus
 
 
 def fail_if(boolean):
@@ -43,3 +43,65 @@ def test_edge_direction():
     fail_if(SW.reverse() != EdgeDirection('NE'))
     fail_if(W.reverse() != EdgeDirection('E'))
     fail_if(NW.reverse() != EdgeDirection('SE'))
+
+
+def test_edge_type():
+    edge_type = EdgeType('wall')
+    edge_type2 = EdgeType('empty')
+    edge_type3 = EdgeType('label')
+
+    fail_if(edge_type.value != 'wall')
+    fail_if(edge_type2.value != 'empty')
+    fail_if(edge_type3.value != 'label')
+
+    try:
+        edge_type_ = EdgeType('')
+        pytest.fail()
+    except ValueError:
+        pass
+
+    edge_type2 = EdgeType('wall')
+    fail_if(edge_type != edge_type2)
+    fail_if(edge_type == edge_type3)
+
+
+def test_room_type():
+    room_type = RoomType('kitchen')
+    room_type2 = RoomType('hallway')
+    room_type3 = RoomType('dining room')
+    room_type4 = RoomType('living room')
+
+    fail_if(room_type.value != 'kitchen')
+    fail_if(room_type2.value != 'hallway')
+    fail_if(room_type3.value != 'dining room')
+    fail_if(room_type4.value != 'living room')
+
+    try:
+        room_type_ = RoomType('')
+        pytest.fail()
+    except ValueError:
+        pass
+
+    room_type2 = RoomType('kitchen')
+    fail_if(room_type != room_type2)
+    fail_if(room_type == room_type3)
+
+
+def test_floor_plan_status():
+    status = FloorPlanStatus('start')
+    status2 = FloorPlanStatus('generating')
+    status3 = FloorPlanStatus('done')
+
+    fail_if(status.value != 'start')
+    fail_if(status2.value != 'generating')
+    fail_if(status3.value != 'done')
+
+    try:
+        status_ = FloorPlanStatus('')
+        pytest.faili()
+    except ValueError:
+        pass
+
+    status2 = FloorPlanStatus('start')
+    fail_if(status != status2)
+    fail_if(status == status3)
