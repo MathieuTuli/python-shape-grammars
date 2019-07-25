@@ -16,6 +16,9 @@ def test_line():
     line = Line(vector, vector2, 2)
     line2 = Line(vector, vector3, 2)
 
+    fail_if(str(line) != f'Line from {vector} to {vector2}')
+    fail_if(line != line)
+    fail_if(line == line2)
     fail_if(line.midpoint != Vector(1, 1))
     fail_if(line.midpoint != vector.linear_combination(vector2, 0.5))
     fail_if(line.left_vector != vector)
@@ -39,8 +42,20 @@ def test_line():
 
     fail_if(not line.contains(vector, 0))
     fail_if(not line.contains(vector, 10))
+    try:
+        line.contains(0, 0)
+        pytest.fail()
+    except ValueError:
+        pass
+
+    fail_if(not line2.contains(Vector(0, 0.5), 0))
 
     fail_if(not line.is_on_midpoint(Vector(1, 1), 0))
     fail_if(not line.is_on_midpoint(Vector(1, 1), 10))
     fail_if(line.is_on_midpoint(Vector(1, 2), 0))
     fail_if(not line.is_on_midpoint(Vector(1, 2), 1))
+    try:
+        line.is_on_midpoint(0, 0)
+        pytest.fail()
+    except ValueError:
+        pass

@@ -111,6 +111,14 @@ def test_rectangle():
     fail_if(not rectangle.overlap_with(rectangle4))
     fail_if(not rectangle.overlap_with(rectangle5))
     fail_if(rectangle.overlap_with(rectangle6))
+    try:
+        rectangle.overlap_with(0)
+        pytest.fail()
+    except Exception:
+        pass
+
+    fail_if(not rectangle.contains_node(Node(Vector(0, 0.5))))
+    fail_if(rectangle.contains_node(Node(Vector(0, 100))))
 
 
 def test_window():

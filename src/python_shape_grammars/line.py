@@ -45,7 +45,8 @@ class Line:
 
     def __eq__(self, other: 'Line') -> bool:
         return False if not isinstance(other, Line) else \
-            self.vector_a == self.vector_b and \
+            self.vector_a == other.vector_a and \
+            self.vector_b == other.vector_b and \
             type(self).__name__ == type(other).__name__
 
     def contains(self, vector: Vector, threshold: float) -> bool:
@@ -54,13 +55,12 @@ class Line:
         '''
         if not isinstance(vector, Vector):
             raise ValueError(f"Passed in vector is not of type {type(Vector)}")
-        if self.m != float('Inf') and self.b != float('Inf'):
-            return \
-                vector.y <= (self.m * vector.x + self.b) + threshold and \
-                vector.y >= (self.m * vector.x + self.b) - threshold
-        else:
-            return vector.y <= self.upper_vector.y + threshold and \
-                vector.y >= self.upper_vector.y - threshold
+        return \
+            vector.y <= (self.m * vector.x + self.b) + threshold and \
+            vector.y >= (self.m * vector.x + self.b) - threshold if \
+            self.m != float('Inf') and self.b != float('Inf') else \
+            vector.y <= self.upper_vector.y + threshold and \
+            vector.y >= self.bottom_vector.y - threshold
 
     def is_on_midpoint(self, vector: Vector, threshold: float) -> bool:
         '''Threshold is used because the points we used are floats, so we might

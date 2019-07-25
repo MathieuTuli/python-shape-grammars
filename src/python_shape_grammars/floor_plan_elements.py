@@ -340,13 +340,15 @@ class Rectangle:
         self.SW: Node = SW
         self.NW: Node = NW
         self.corners: List[Node] = [self.NE, self.SE, self.NW, self.SW]
-        self.width: float = NE.vector.x - NW.vector.x
-        self.height: float = NE.vector.y - SE.vector.y
+        self.width: float = abs(NE.vector.x - NW.vector.x)
+        self.height: float = abs(NE.vector.y - SE.vector.y)
 
         # TODO need to define allowable labels
         self.is_horizontal: bool = self.width > self.height
         self.is_vertical: bool = self.width < self.height
         self.is_square: bool = self.width == self.height
+        self.midpoint = Vector(
+            NW.vector.x + (self.width / 2), SW.vector.y + (self.height / 2))
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} defined by"
@@ -375,10 +377,6 @@ class Rectangle:
         max_x = max(a.vector.x, b.vector.x, c.vector.x, d.vector.x)
         min_y = min(a.vector.y, b.vector.y, c.vector.y, d.vector.y)
         max_y = max(a.vector.y, b.vector.y, c.vector.y, d.vector.y)
-        print(min_x)
-        print(max_x)
-        print(min_y)
-        print(max_y)
         NE = [node for node in nodes if node.vector.x ==
               max_x and node.vector.y == max_y][0]
         SE = [node for node in nodes if node.vector.x ==
@@ -392,12 +390,22 @@ class Rectangle:
     def overlap_with(self, other: 'Rectangle') -> bool:
         '''Checks if this rectangle overlaps with another
         '''
+        if not isinstance(other, Rectangle):
+            raise ValueError("Cannot check overlap of none-Rectangle object")
         if self.NW.vector.x > other.SE.vector.x or \
                 other.NW.vector.x > self.SE.vector.x or \
                 self.NW.vector.y < other.SE.vector.y or \
                 other.NW.vector.y < self.SE.vector.y:
             return False
         return True
+
+    def contains_node(self, node: Node) -> bool:
+        if not isinstance(node, Node):
+            raise ValueError("Cannot check overlap of none-Node object")
+        return node.vector.x <= self.NE.vector.x and \
+            node.vector.x >= self.NW.vector.x and \
+            node.vector.y <= self.NE.vector.y and \
+            node.vector.y >= self.SE.vector.y
 
 
 class Window(Rectangle):

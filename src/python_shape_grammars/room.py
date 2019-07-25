@@ -13,16 +13,13 @@ class Room(Rectangle):
     room_counter = 0
 
     def __init__(self, corners: List[Node],
-                 name: str,
-                 label_node: RoomNode,
+                 room_node: RoomNode,
                  staircase: Staircase = None) -> None:
         Rectangle.__init__(self, corners)
-        self.name = name
-        if label_node.x != (self.NE.x - self.NW.x) and \
-                label_node.y != (self.NE.y - self.SE.y):
+        if room_node.vector != self.midpoint:
             raise ValueError(
-                "The label_node is not in the midpoint of the rectangle")
-        self.label_node = label_node
+                "The room_node is not in the midpoint of the rectangle")
+        self.room_node = room_node
         self.staircase = staircase
         self.room_count = Room.room_counter
         Room.room_counter += 1
@@ -33,9 +30,8 @@ class Room(Rectangle):
             self.SE == other.SE and \
             self.SW == other.SW and \
             self.NW == other.NW and \
-            self.label_node == other.label_node and \
+            self.room_node == other.room_node and \
             self.staircase == other.staircase and \
-            self.name == other.name and \
             self.room_count == other.room_count and \
             type(self).__name__ == type(other).__name__
 
@@ -45,6 +41,5 @@ class Room(Rectangle):
                 + f", ({self.SE.vector.x}, {self.SE.vector.y})"
                 + f", ({self.SW.vector.x}, {self.SW.vector.y})"
                 + f", ({self.NW.vector.x}, {self.NW.vector.y})]"
-                + f" | {self.name}"
-                + f" labelled: {self.label_node.type}"
+                + f" labelled: {self.room_node.room_type}"
                 + f" | count: {self.room_count}")
