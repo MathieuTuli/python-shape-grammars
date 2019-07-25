@@ -40,7 +40,7 @@ class Line:
     def __str__(self) -> str:
         return f"{type(self).__name__} from {self.vector_a} to {self.vector_b}"
 
-    def __len__(self) -> float:
+    def __abs__(self) -> float:
         return self.vector_a.distance_to(self.vector_b)
 
     def __eq__(self, other: 'Line') -> bool:

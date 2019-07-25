@@ -52,14 +52,15 @@ class Edge:
         self.doors: List[Door] = doors
         self.windows: List[Window] = windows
         self.edge_count: int = Edge.edge_counter
+        self.midpoint = self.line.midpoint
         Edge.edge_counter += 1
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} {self.edge_count} -"
                 + " {self.type} connected by {self.node_a} and {self.node_b}")
 
-    def __len__(self) -> float:
-        return len(self.line)
+    def __abs__(self) -> float:
+        return abs(self.line)
 
     def __eq__(self, other: 'Edge') -> bool:
         return False if not isinstance(other, Edge) else \
@@ -104,22 +105,19 @@ class Edge:
     def is_vertical(self) -> bool:
         return self.line.is_vertical
 
-    def length(self) -> float:
-        return len(self)
-
-    def get_midpoint(self) -> Vector:
-        return self.node_a.linear_combination(self.node_b, value=0.5)
-
+    # TODO
     def get_left_door_point(self) -> Vector:
         '''this one doesn't really make sense
         '''
         raise NotImplementedError
 
+    # TODO
     def get_right_door_point(self) -> Vector:
         '''this one doesn't really make sense
         '''
         raise NotImplementedError
 
+    # TODO
     def does_intersect(self, rectangle: 'Rectangle') -> Optional[bool]:
         '''Tests whether or not a rectangle intersects this edge or not
         This is used to determine whether or nota door/window belongs to this
@@ -143,7 +141,7 @@ class Node:
     respresented as follows:
 
     N | NE | E | SE | S | SW | W | NW
-    --|----|---|----|---|--------|---
+    --|----|---|----|---|----|---|---
     0 | 1  | 2 | 3  | 4 | 5  | 6 | 7
 
     You might be wondering why NE, SE, SW, and NW are valid neighbours for
@@ -183,7 +181,7 @@ class Node:
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} {self.node_count} -" +
-                " @ {self.vector}")
+                f" @ {self.vector}")
 
     def __eq__(self, other: 'Node') -> bool:
         return False if not isinstance(other, Node) else \
@@ -195,7 +193,7 @@ class Node:
     def get_direction_to(self, other: 'Node') -> EdgeDirection:
         '''
             N | NE | E | SE | S | SW | W | NW
-            --|----|---|----|---|--------|---
+            --|----|---|----|---|----|---|---
             0 | 1  | 2 | 3  | 4 | 5  | 6 | 7
         '''
         if self.left_of(other) == -1 and self.beneath(other) == 1:
@@ -216,7 +214,7 @@ class Node:
         if self.right_of(other) == 1 and self.above(other) == 1:
             return EdgeDirection('SW')
 
-        if self.right_of(other) == -1 and self.above(other) == -1:
+        if self.right_of(other) == 1 and self.above(other) == -1:
             return EdgeDirection('W')
 
         if self.right_of(other) == 1 and self.beneath(other) == 1:
@@ -237,18 +235,15 @@ class Node:
     def add_edge(self,
                  edge: Edge,
                  transformation: Optional[Transformation] = None) -> None:
+        if not isinstance(edge, Edge):
+            raise ValueError(
+                f"Passed in edge is not of type Edge")
         if self == edge.node_a:
             direction = edge.direction
         else:
             direction = edge.direction.reverse()
-        if not isinstance(direction, EdgeDirection):
-            raise ValueError(
-                f"Passed in direction is not of type EdgeDirection")
         if self.neighbour_edges[direction.value] is not None:
             raise ValueError(f"There already exists an edge at {direction}")
-        if not isinstance(edge, Edge):
-            raise ValueError(
-                f"Passed in edge is not of type Edge")
         if transformation is not None and not isinstance(transformation,
                                                          Transformation):
             raise ValueError(
@@ -301,18 +296,18 @@ class RoomNode(Node):
 
     def __init__(self, vector: Vector,
                  room_type: RoomType) -> None:
-        Node.__init__(vector)
+        Node.__init__(self, vector)
         self.room_type = room_type.value
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} {self.node_count} -"
-                + " {self.room_type} - {self.id} @ {self.point}")
+                + f" {self.room_type} - {self.vector}")
 
-    def __eq__(self, other: 'Node') -> bool:
-        return False if not isinstance(other, Node) else \
+    def __eq__(self, other: 'RoomNode') -> bool:
+        return False if not isinstance(other, RoomNode) else \
             self.neighbour_edges == other.neighbour_edges and \
             self.vector == other.vector and \
-            self.node_counter == other.node_count and \
+            self.node_count == other.node_count and \
             self.room_type == other.room_type and \
             type(self).__name__ == type(other).__name__
 
@@ -321,14 +316,14 @@ class CornerNode(Node):
     '''Extends Node, just mostly for typing reasons'''
 
     def __init__(self, vector: Vector) -> None:
-        Node.__init__(vector)
+        Node.__init__(self, vector)
 
 
 class WallNode(Node):
     '''Extends Node, just mostly for typing reasons'''
 
     def __init__(self, vector: Vector) -> None:
-        Node.__init__(vector)
+        Node.__init__(self, vector)
 
 
 class Rectangle:
@@ -390,14 +385,6 @@ class Rectangle:
               min_x and node.vector.y == min_y][0]
         NW = [node for node in nodes if node.vector.x ==
               min_x and node.vector.y == max_y][0]
-        if NE.vector.x != SE.vector.x or NW.vector.x != SW.vector.x or \
-                NE.vector.y != NW.vector.y or SE.vector.y != SW.vector.y:
-            raise ValueError(
-                "The rectangular corners did not match up" +
-                f"\nNE: ({NE.vector.x}, {NE.vector.y})" +
-                f"\nSE: ({SE.vector.x}, {SE.vector.y})" +
-                f"\nSW: ({SW.vector.x}, {SW.vector.y})" +
-                f"\nNW: ({NW.vector.x}, {NW.vector.y})")
         return (NE, SE, SW, NW)
 
     def overlap_with(self, other: 'Rectangle') -> bool:
@@ -413,14 +400,14 @@ class Rectangle:
 
 class Window(Rectangle):
     def __init__(self, corners: List[Node]):
-        Rectangle.__init__(corners)
+        Rectangle.__init__(self, corners)
 
 
 class Door(Rectangle):
     def __init__(self, corners: List[Node]):
-        Rectangle.__init__(corners)
+        Rectangle.__init__(self, corners)
 
 
 class Staircase(Rectangle):
     def __init__(self, corners: List[Node]):
-        Rectangle.__init__(corners)
+        Rectangle.__init__(self, corners)

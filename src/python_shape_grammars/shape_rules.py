@@ -21,7 +21,7 @@ class ShapeRule:
 
 class TemplateRule(ShapeRule):
     def __init__(self, name: str) -> None:
-        ShapeRule.__init__(name)
+        ShapeRule.__init__(self, name)
 
     def apply(self, layout: Layout) -> Layout:
         pass
@@ -29,7 +29,7 @@ class TemplateRule(ShapeRule):
 
 class NoOverlappingRooms(ShapeRule):
     def __init__(self, name: str) -> None:
-        ShapeRule.__init__(name)
+        ShapeRule.__init__(self, name)
 
     def apply(self, layout: Layout) -> Layout:
         raise NotImplementedError
@@ -37,7 +37,7 @@ class NoOverlappingRooms(ShapeRule):
 
 class WindowRoomBind(ShapeRule):
     def __init__(self, name: str) -> None:
-        ShapeRule.__init__(name)
+        ShapeRule.__init__(self, name)
 
     def apply(self, layout: Layout) -> Layout:
         raise NotImplementedError
@@ -45,7 +45,7 @@ class WindowRoomBind(ShapeRule):
 
 class HallwayToRoom(ShapeRule):
     def __init__(self, name: str) -> None:
-        ShapeRule.__init__(name)
+        ShapeRule.__init__(self, name)
 
     def apply(self, layout: Layout) -> Layout:
         raise NotImplementedError
@@ -53,7 +53,7 @@ class HallwayToRoom(ShapeRule):
 
 class MinimumRoomDimensions(ShapeRule):
     def __init__(self, name: str) -> None:
-        ShapeRule.__init__(name)
+        ShapeRule.__init__(self, name)
 
     def apply(self, layout: Layout) -> Layout:
         raise NotImplementedError
@@ -61,7 +61,7 @@ class MinimumRoomDimensions(ShapeRule):
 
 class MultFloorStaircase(ShapeRule):
     def __init__(self, name: str) -> None:
-        ShapeRule.__init__(name)
+        ShapeRule.__init__(self, name)
 
     def apply(self, layout: Layout) -> Layout:
         raise NotImplementedError
@@ -69,7 +69,7 @@ class MultFloorStaircase(ShapeRule):
 
 class WindowIndependence(ShapeRule):
     def __init__(self, name: str) -> None:
-        ShapeRule.__init__(name)
+        ShapeRule.__init__(self, name)
 
     def apply(self, layout: Layout) -> Layout:
         raise NotImplementedError
@@ -77,7 +77,7 @@ class WindowIndependence(ShapeRule):
 
 class DoorIndependence(ShapeRule):
     def __init__(self, name: str) -> None:
-        ShapeRule.__init__(name)
+        ShapeRule.__init__(self, name)
 
     def apply(self, layout: Layout) -> Layout:
         raise NotImplementedError
@@ -85,7 +85,7 @@ class DoorIndependence(ShapeRule):
 
 class StaircaseIndependence(ShapeRule):
     def __init__(self, name: str) -> None:
-        ShapeRule.__init__(name)
+        ShapeRule.__init__(self, name)
 
     def apply(self, layout: Layout) -> Layout:
         raise NotImplementedError

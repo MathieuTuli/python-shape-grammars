@@ -10,12 +10,13 @@ from .floor_plan_elements import RoomNode, Node, Rectangle, Staircase
 class Room(Rectangle):
     '''Rectangle Class
     '''
+    room_counter = 0
 
     def __init__(self, corners: List[Node],
                  name: str,
                  label_node: RoomNode,
                  staircase: Staircase = None) -> None:
-        Rectangle.__init__(corners)
+        Rectangle.__init__(self, corners)
         self.name = name
         if label_node.x != (self.NE.x - self.NW.x) and \
                 label_node.y != (self.NE.y - self.SE.y):
@@ -23,6 +24,8 @@ class Room(Rectangle):
                 "The label_node is not in the midpoint of the rectangle")
         self.label_node = label_node
         self.staircase = staircase
+        self.room_count = Room.room_counter
+        Room.room_counter += 1
 
     def __eq__(self, other: 'Room') -> bool:
         return False if not isinstance(other, Room) else \
@@ -33,13 +36,15 @@ class Room(Rectangle):
             self.label_node == other.label_node and \
             self.staircase == other.staircase and \
             self.name == other.name and \
+            self.room_count == other.room_count and \
             type(self).__name__ == type(other).__name__
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} defined by"
-                + " [({self.NE.vector.x}, {self.NE.vector.y})"
-                + ", ({self.SE.vector.x}, {self.SE.vector.y})"
-                + ", ({self.SW.vector.x}, {self.SW.vector.y})"
-                + ", ({self.NW.vector.x}, {self.NW.vector.y})]"
-                + " | {self.name}"
-                + " labelled: {self.label_node.type}")
+                + f" [({self.NE.vector.x}, {self.NE.vector.y})"
+                + f", ({self.SE.vector.x}, {self.SE.vector.y})"
+                + f", ({self.SW.vector.x}, {self.SW.vector.y})"
+                + f", ({self.NW.vector.x}, {self.NW.vector.y})]"
+                + f" | {self.name}"
+                + f" labelled: {self.label_node.type}"
+                + f" | count: {self.room_count}")

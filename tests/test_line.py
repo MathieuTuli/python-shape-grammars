@@ -26,6 +26,7 @@ def test_line():
     fail_if(line.is_vertical)
     fail_if(line.m != 1.0)
     fail_if(line.b != 0.0)
+    fail_if(abs(line2) != 1.0)
 
     fail_if(line2.left_vector is not None)
     fail_if(line2.right_vector is not None)
