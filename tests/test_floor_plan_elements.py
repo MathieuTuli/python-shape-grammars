@@ -13,38 +13,6 @@ def fail_if(boolean):
         pytest.fail()
 
 
-def test_vector():
-    vector = Vector(0, 0)
-    fail_if(vector.x != 0)
-    fail_if(vector.y != 0)
-    fail_if(vector != Vector(0, 0))
-
-    fail_if(vector.left_of(Vector(-1, 0)) != 0)
-    fail_if(vector.left_of(Vector(1, 0)) != 1)
-    fail_if(vector.left_of(Vector(0, 1)) != -1)
-
-    fail_if(vector.right_of(Vector(-1, 0)) != 1)
-    fail_if(vector.right_of(Vector(1, 0)) != 0)
-    fail_if(vector.right_of(Vector(0, -1)) != -1)
-
-    fail_if(vector.beneath(Vector(0, 1)) != 1)
-    fail_if(vector.beneath(Vector(0, -1)) != 0)
-    fail_if(vector.beneath(Vector(1, 0)) != -1)
-
-    fail_if(vector.above(Vector(0, 1)) != 0)
-    fail_if(vector.above(Vector(0, -1)) != 1)
-    fail_if(vector.above(Vector(-1, 0)) != -1)
-
-    vector2 = Vector(1, 1)
-    fail_if(vector.distance_to(vector2) != math.sqrt(2))
-
-    lc = vector.linear_combination(vector2, 2)
-    fail_if(lc != Vector(2, 2))
-
-    lc = vector2.linear_combination(vector2, 2, 3)
-    fail_if(lc != Vector(5, 5))
-
-
 def test_node_and_edge():
     vector = Vector(0, 0)
     node = Node(vector)

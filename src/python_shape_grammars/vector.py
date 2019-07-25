@@ -12,7 +12,9 @@ class Vector:
         return f"{type(self).__name__} ({self.x}, {self.y})"
 
     def __add__(self, other: 'Vector') -> 'Vector':
-        raise NotImplementedError
+        if not isinstance(other, Vector):
+            raise ValueError("Cannot add vector with other not of type Vector")
+        return Vector(self.x + other.x, self.y + other.y)
 
     def __eq__(self, other: 'Vector') -> bool:
         return False if not isinstance(other, Vector) else \
