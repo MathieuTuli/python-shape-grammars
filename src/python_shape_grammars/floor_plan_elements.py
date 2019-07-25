@@ -369,6 +369,8 @@ class Rectangle:
                 raise ValueError(
                     f"One of the corners is not of type Node")
         a, b, c, d = nodes
+        if a == b or a == c or a == d or b == c or b == d or c == d:
+            raise ValueError("There are duplicates nodes in the list")
         min_x = min(a.vector.x, b.vector.x, c.vector.x, d.vector.x)
         max_x = max(a.vector.x, b.vector.x, c.vector.x, d.vector.x)
         min_y = min(a.vector.y, b.vector.y, c.vector.y, d.vector.y)

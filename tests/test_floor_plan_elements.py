@@ -158,8 +158,6 @@ def test_node_and_edge():
 
 def test_room_node():
     rn = RoomNode(vector=Vector(0, 0), room_type=RoomType('kitchen'))
-    print(str(rn))
-    print(f"RoomNode {Node.node_counter - 1} - kitchen - {Vector(0,0)}")
     fail_if(
         str(rn) != f"RoomNode {Node.node_counter - 1} - kitchen - " +
         f"{Vector(0,0)}")
@@ -186,7 +184,3 @@ def test_wall_node():
     wn2 = WallNode(vector=Vector(0, 0))
     fail_if(wn != wn)
     fail_if(wn == wn2)
-
-
-def test_rectangle():
-    pass
