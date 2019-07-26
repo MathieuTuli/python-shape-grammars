@@ -44,11 +44,16 @@ class Edge:
         if not isinstance(edge_type, EdgeType):
             raise ValueError(f"edge_type {edge_type} is of incorrect type."
                              + " Need EdgeType")
+        if node_a == node_b or node_a.vector == node_b.vector:
+            raise ValueError("Incompatible nodes for an edge")
         self.type: str = edge_type
         self.direction = node_a.get_direction_to(node_b)
         self.node_a: Node = node_a
         self.node_b: Node = node_b
         self.line: Line = Line(node_a.vector, node_b.vector, thickness)
+        self.upper_node = node_a if node_a.vector == self.line.upper_vector \
+            else node_b
+        self.bottom_node = node_a if self.upper_node != node_a else node_b
         self.doors: List[Door] = doors
         self.windows: List[Window] = windows
         self.edge_count: int = Edge.edge_counter
@@ -57,7 +62,7 @@ class Edge:
 
     def __str__(self) -> str:
         return (f"{type(self).__name__} {self.edge_count} -"
-                + " {self.type} connected by {self.node_a} and {self.node_b}")
+                + f" {self.type} connected by {self.node_a} and {self.node_b}")
 
     def __abs__(self) -> float:
         return abs(self.line)
@@ -164,6 +169,8 @@ class Node:
 
     def __init__(self, vector: Vector,) -> None:
         # The following initializes the empty neighbour array
+        if not isinstance(vector, Vector):
+            raise ValueError("Argument * vector * must be of type Vector")
         self.neighbour_edges: MKDict = MKDict()
         self.neighbour_edges[0, 'N'] = None
         self.neighbour_edges[1, 'NE'] = None
@@ -173,8 +180,6 @@ class Node:
         self.neighbour_edges[5, 'SW'] = None
         self.neighbour_edges[6, 'W'] = None
         self.neighbour_edges[7, 'NW'] = None
-        if not isinstance(vector, Vector):
-            raise ValueError("Argument * vector * must be of type Vector")
         self.vector: Vector = vector
         self.node_count: int = Node.node_counter
         Node.node_counter += 1
@@ -238,10 +243,8 @@ class Node:
         if not isinstance(edge, Edge):
             raise ValueError(
                 f"Passed in edge is not of type Edge")
-        if self == edge.node_a:
-            direction = edge.direction
-        else:
-            direction = edge.direction.reverse()
+        direction = edge.direction if self == edge.node_a else \
+            edge.direction.reverse()
         if self.neighbour_edges[direction.value] is not None:
             raise ValueError(f"There already exists an edge at {direction}")
         if transformation is not None and not isinstance(transformation,

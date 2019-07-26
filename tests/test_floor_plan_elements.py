@@ -70,6 +70,12 @@ def test_node_and_edge():
     fail_if(node2.get_direction_to(node) != direction.reverse())
     et = EdgeType.wall
     edge = Edge(edge_type=et, node_a=node, node_b=node2)
+
+    try:
+        Edge(edge_type=et, node_a=node, node_b=node)
+        pytest.fail()
+    except ValueError:
+        pass
     node.add_edge(edge)
     node2.add_edge(edge)
     try:
