@@ -411,14 +411,14 @@ class Rectangle:
             node.vector.y >= self.SE.vector.y
 
 
-class Window(Rectangle):
-    def __init__(self, corners: List[Node]):
-        Rectangle.__init__(self, corners)
+class Window(Line):
+    def __init__(self, vector_a: Vector, vector_b: Vector):
+        Line.__init__(self, vector_a, vector_b)
 
 
-class Door(Rectangle):
-    def __init__(self, corners: List[Node]):
-        Rectangle.__init__(self, corners)
+class Door(Line):
+    def __init__(self, vector_a: Vector, vector_b: Vector):
+        Line.__init__(self, vector_a, vector_b)
 
 
 class Staircase(Rectangle):
