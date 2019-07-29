@@ -44,7 +44,7 @@ class Edge:
         if not isinstance(edge_type, EdgeType):
             raise ValueError(f"edge_type {edge_type} is of incorrect type."
                              + " Need EdgeType")
-        if not isinstance(node_a, Node) or not isintance(node_b, Node):
+        if not isinstance(node_a, Node) or not isinstance(node_b, Node):
             raise ValueError("Incompatible nodes for an edge")
         if node_a == node_b or node_a.vector == node_b.vector:
             raise ValueError("Incompatible nodes for an edge")
