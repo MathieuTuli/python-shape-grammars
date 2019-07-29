@@ -63,10 +63,11 @@ class EdgeDirection:
 
 
 EdgeType = enum.Enum(
-    'RoomType', ['wall', 'empty', 'label'])
+    'EdgeType', ['wall', 'empty', 'label'])
 
 RoomType = enum.Enum(
-    'RoomType', ['kitchen', 'hallway', 'dining', 'living'])
+    'RoomType', ['kitchen', 'hallway', 'dining', 'living', 'other', 'bed',
+                 'bath', 'closet', 'garage', 'staircase'])
 
 FloorPlanStatus = enum.Enum(
-    'RoomType', ['start', 'generating', 'done'])
+    'FloorPlanStatus', ['start', 'generating', 'done'])
