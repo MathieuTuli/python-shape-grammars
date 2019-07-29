@@ -14,8 +14,7 @@ class Room(Rectangle):
 
     def __init__(self, corners: List[Node],
                  name: str,
-                 room_node: RoomNode,
-                 staircase: Staircase = None) -> None:
+                 room_node: RoomNode,) -> None:
         if not isinstance(name, str):
             raise ValueError("Must use a unique string for the name")
         Rectangle.__init__(self, corners)
@@ -24,7 +23,6 @@ class Room(Rectangle):
                 "The room_node is not in the midpoint of the rectangle")
         self.name = name
         self.room_node = room_node
-        self.staircase = staircase
         self.room_count = Room.room_counter
         Room.room_counter += 1
 
@@ -36,7 +34,6 @@ class Room(Rectangle):
             self.NW == other.NW and \
             self.name == other.name and \
             self.room_node == other.room_node and \
-            self.staircase == other.staircase and \
             self.room_count == other.room_count and \
             type(self).__name__ == type(other).__name__
 
