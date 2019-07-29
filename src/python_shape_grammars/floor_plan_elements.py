@@ -20,7 +20,7 @@ vector value
 '''
 from typing import List, Tuple, Optional
 
-from .multi_key_dict import multi_key_dict as MKDict
+from multi_key_dict import multi_key_dict as MKDict
 
 from .components import EdgeDirection, RoomType, EdgeType
 from .transformations import Transformation
