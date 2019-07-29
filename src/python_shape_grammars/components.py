@@ -36,7 +36,7 @@ class EdgeDirection:
                 " ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']")
 
     def __str__(self) -> str:
-        return f"{type(self).__name__} | {self.value} or {self.integer_value}"
+        return self.value
 
     def __eq__(self, other: 'EdgeDirection') -> bool:
         return False if not isinstance(other, EdgeDirection) else \

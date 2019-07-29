@@ -141,7 +141,8 @@ class FloorPlan:
     def add_edge(self, edge: Edge) -> None:
         if not isinstance(edge, Edge):
             raise ValueError(f"Cannot add edge not of type {type(Edge)}")
-        self.edges[str(edge.node_a), str(edge.node_b),
+        self.edges[f"{edge.node_a}_{edge.direction}",
+                   f"{edge.node_b}_{edge.direction}",
                    str(edge)] = edge
 
     def remove_edge(self, edge: Edge) -> bool:
