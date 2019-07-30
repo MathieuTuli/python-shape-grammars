@@ -255,10 +255,12 @@ class Node:
                 "Passed in transformation is not of " +
                 f"type Transformation")
         if transformation:
-            self.neighbour_edges[direction.integer_value] = transformation(
+            self.neighbour_edges[direction.integer_value,
+                                 direction.value] = transformation(
                 edge)
         else:
-            self.neighbour_edges[direction.integer_value] = edge
+            self.neighbour_edges[direction.integer_value,
+                                 direction.value] = edge
 
     def get_neighbour_edge(
             self,

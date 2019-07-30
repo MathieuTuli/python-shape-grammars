@@ -219,7 +219,6 @@ def test_floor_plan_edges():
         pass
     _, ret = fp.edges_exist([edge, edge2])
     fail_if(not ret)
-    print(edge3)
     edge_ret, ret = fp.edges_exist([edge, edge2, edge3])
     fail_if(ret)
     fail_if(edge_ret != edge3)
@@ -233,3 +232,16 @@ def test_floor_plan_edges():
         pytest.fail()
     except ValueError:
         pass
+
+    node_4 = Node(Vector(0, -10))
+    edge = Edge(EdgeType.wall, node_a=node, node_b=node_4)
+    fail_if(node.neighbour_edges[node.get_direction_to(node_4).integer_value]
+            is not None)
+    fp.add_edge(edge)
+    node.add_edge(edge)
+    node_4.add_edge(edge)
+    fail_if(node.neighbour_edges[node.get_direction_to(
+        node_4).integer_value] is None)
+    print(fp.nodes)
+    fail_if(fp.nodes[str(node.vector)].neighbour_edges[
+        node.get_direction_to(node_4).integer_value] != edge)
