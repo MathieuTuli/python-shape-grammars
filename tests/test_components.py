@@ -51,7 +51,7 @@ def test_edge_direction():
     except ValueError:
         pass
 
-    fail_if(str(N) != "EdgeDirection | N or 0")
+    fail_if(str(N) != "N")
 
 
 def test_edge_type():

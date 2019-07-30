@@ -176,8 +176,8 @@ def test_floor_plan_edges():
     fail_if(fp.get_node(Vector(0, 1)).neighbour_edges[0].bottom_node != node)
 
     fp.add_edge(edge)
-    fail_if(fp.edges[str(node)] != edge)
-    fail_if(fp.edges[str(node_b)] != edge)
+    fail_if(fp.edges[f'{node}_{node.get_direction_to(node_b)}'] != edge)
+    fail_if(fp.edges[f'{node_b}_{node_b.get_direction_to(node)}'] != edge)
     fail_if(fp.edges[str(edge)] != edge)
 
     try:
@@ -200,12 +200,12 @@ def test_floor_plan_edges():
     fail_if(fp.remove_edge(edge2))
     fp.add_edge(edge2)
     fail_if(len(fp.edges) != 2)
-    fail_if(fp.edges[str(node)] != edge)
-    fail_if(fp.edges[str(node_b)] != edge)
+    fail_if(fp.edges[f'{node}_{node.get_direction_to(node_b)}'] != edge)
+    fail_if(fp.edges[f'{node_b}_{node_b.get_direction_to(node)}'] != edge)
     fail_if(fp.edges[str(edge)] != edge)
-    fail_if(fp.edges[str(node_3)] == edge)
-    fail_if(fp.edges[str(node_3)] != edge2)
-    fail_if(fp.edges[str(node_4)] != edge2)
+    fail_if(fp.edges[f'{node_3}_{node_3.get_direction_to(node_4)}'] == edge)
+    fail_if(fp.edges[f'{node_3}_{node_3.get_direction_to(node_4)}'] != edge2)
+    fail_if(fp.edges[f'{node_4}_{node_4.get_direction_to(node_3)}'] != edge2)
     fail_if(fp.edges[str(edge2)] != edge2)
 
     fail_if(not fp.edge_exists(edge))
