@@ -20,7 +20,8 @@ class Room(Rectangle):
         Rectangle.__init__(self, corners)
         if room_node.vector != self.midpoint:
             raise ValueError(
-                "The room_node is not in the midpoint of the rectangle")
+                "For {str(self)} -" +
+                " The room_node is not in the midpoint of the rectangle")
         self.name = name
         self.room_node = room_node
         self.room_count = Room.room_counter

@@ -249,7 +249,8 @@ class Node:
             edge.direction.reverse()
         if self.neighbour_edges[direction.value] is not None:
             raise ValueError(
-                f"For {str(self)}There already exists an edge at {direction}")
+                f"For {str(self)} -" +
+                " There already exists an edge at {direction}")
         if transformation is not None and not isinstance(transformation,
                                                          Transformation):
             raise ValueError(
