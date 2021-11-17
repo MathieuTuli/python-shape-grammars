@@ -1,4 +1,8 @@
-#Python Shape Grammars Programming#
+# Python Shape Grammars Programming
 
-##Program for programming shape grammars in python##
-##This program was developed to manipulate rectangular-based shape grammars, and does not cover shapes that would not have perpendicular edges###
+## Updates
+- November 17, 2021: I've decided to revisit this, and spruce it up into a proper program
+
+## Information
+
+This program was developed to manipulate rectangular-based shape grammars, and does not cover shapes that would not have perpendicular edges
